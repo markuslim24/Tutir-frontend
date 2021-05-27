@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { store } from "../store/store";
 import { initializeAuthState } from "../store/slice/auth";
 import { useEffect } from "react";
+import Navbar from "../components/Navbar";
 
 //Global Main
 function MyApp({ Component, pageProps }: AppProps) {
@@ -13,6 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
   return (
     <Provider store={store}>
+      <Navbar />
       <Component {...pageProps} />
     </Provider>
   );
