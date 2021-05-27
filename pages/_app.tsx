@@ -6,6 +6,8 @@ import { store } from "../store/store";
 import { initializeAuthState } from "../store/slice/auth";
 import { useEffect } from "react";
 import Navbar from "../components/Navbar";
+import { ThemeProvider } from "@material-ui/core/styles";
+import theme from "../styles/muiTheme";
 
 //Global Main
 function MyApp({ Component, pageProps }: AppProps) {
@@ -14,8 +16,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
   return (
     <Provider store={store}>
-      <Navbar />
-      <Component {...pageProps} />
+      <ThemeProvider theme={theme}>
+        <Navbar />
+        <Component {...pageProps} />
+      </ThemeProvider>
     </Provider>
   );
 }
