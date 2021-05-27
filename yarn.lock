@@ -44,6 +44,16 @@
   "resolved" "https://registry.npmjs.org/@emotion/hash/-/hash-0.8.0.tgz"
   "version" "0.8.0"
 
+"@fontsource/headland-one@^4.3.0":
+  "integrity" "sha512-csi17y2HoMgIkLTw7RoMDm2S8HfkbczhVKsDP2GmqUk+1o3g99sJgopmScnGdZa3S1XPQQNLLEX2O1avTdxfhw=="
+  "resolved" "https://registry.npmjs.org/@fontsource/headland-one/-/headland-one-4.3.0.tgz"
+  "version" "4.3.0"
+
+"@fontsource/roboto@^4.3.0":
+  "integrity" "sha512-WeFWCWYutLWyEtRmBhn+bLbW4/km0l+HhTpR8wWDxJLiGiMOhVLO/Z0q5w6l20ZOkWnf6Z1rN3o3W2HjvYN6Rg=="
+  "resolved" "https://registry.npmjs.org/@fontsource/roboto/-/roboto-4.3.0.tgz"
+  "version" "4.3.0"
+
 "@hapi/accept@5.0.2":
   "integrity" "sha512-CmzBx/bXUR8451fnZRuZAJRlzgm0Jgu5dltTX/bszmR2lheb9BpyN47Q1RbaGTsvFzn0PXAEs+lXDKfshccYZw=="
   "resolved" "https://registry.npmjs.org/@hapi/accept/-/accept-5.0.2.tgz"
