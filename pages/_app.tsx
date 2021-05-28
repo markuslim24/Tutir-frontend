@@ -1,5 +1,5 @@
 //imports
-import "../styles/globals.css";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
@@ -17,8 +17,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <Navbar />
-        <Component {...pageProps} />
+        <CssBaseline>
+          <Navbar />
+          <Component {...pageProps} />
+        </CssBaseline>
       </ThemeProvider>
     </Provider>
   );
