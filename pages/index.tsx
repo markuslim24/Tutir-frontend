@@ -1,18 +1,25 @@
-import { useEffect, useState } from 'react';
-import { client } from '../util/util';
+//imports
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { isLoggedIn } from "../store/slice/auth";
+import Navbar from "../components/Navbar";
 
+//Home page
 export default function Home() {
-  const [message , setMessage] = useState('');
-  useEffect(() => {
-    client.get('/user').then(res => {
-      setMessage(res.data.payload);
-    }).catch(err => {
-      console.log(err);
-    });
-  }, []);
+  const [message, setMessage] = useState("");
+  const isAuthenticated = useSelector(isLoggedIn);
+
   return (
-    <div>
-      { message }
-    </div>
+    <>
+      <Navbar />
+      {isAuthenticated ? (
+        <>
+          <h1>user authenticated</h1>
+        </>
+      ) : (
+        <h1>User not authenticated</h1>
+      )}
+      <h1>{message}</h1>
+    </>
   );
 }
