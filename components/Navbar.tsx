@@ -171,20 +171,20 @@ const Navbar = () => {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton aria-label="show new mails" color="inherit">
+        <IconButton aria-label="show favourite videos" color="inherit">
           <StarIcon />
         </IconButton>
         <p>Favourites</p>
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show new notifications" color="inherit">
-          <Avatar src="logo.png" className={classes.Avatar} />
+        <IconButton aria-label="show profile of current user" color="inherit">
+          <Avatar src="Avatar.png" className={classes.Avatar} />
         </IconButton>
         <p>Profile</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
-          aria-label="account of current user"
+          aria-label="show settings"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
           color="inherit"
@@ -237,7 +237,7 @@ const Navbar = () => {
                   color="inherit"
                   onClick={handleProfileMenuOpen}
                 >
-                  <Avatar src="logo.png" className={classes.Avatar} />
+                  <Avatar src="Avatar.png" className={classes.Avatar} />
                 </IconButton>
                 <IconButton
                   edge="end"
