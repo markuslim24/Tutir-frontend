@@ -8,8 +8,8 @@ COPY ["package.json", "package-lock.json*", "./"]
 
 RUN npm install --production
 
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+RUN groupadd -g 1001 --system nodejs
+RUN useradd --system -u 1001 nextjs
 
 COPY ./public ./public/
 COPY --chown=nextjs:nodejs ./.next ./.next/
