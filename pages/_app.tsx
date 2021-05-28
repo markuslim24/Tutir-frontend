@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import { store } from "../store/store";
 import { initializeAuthState } from "../store/slice/auth";
 import { useEffect } from "react";
-import Navbar from "../components/Navbar";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../styles/muiTheme";
 
@@ -18,7 +17,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <CssBaseline>
-          <Navbar />
           <Component {...pageProps} />
         </CssBaseline>
       </ThemeProvider>

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { isLoggedIn } from "../store/slice/auth";
+import Navbar from "../components/Navbar";
 
 //Home page
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
 
   return (
     <>
+      <Navbar />
       {isAuthenticated ? (
         <>
           <h1>user authenticated</h1>
