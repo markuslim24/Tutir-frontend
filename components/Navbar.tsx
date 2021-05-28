@@ -1,9 +1,15 @@
-import React from "react";
+//imports
+import React, { useCallback } from "react";
+import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { isLoggedIn, logOut } from "../store/slice/auth";
+
+//Materialui imports
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
+import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -13,6 +19,7 @@ import Avatar from "@material-ui/core/Avatar";
 import SettingsIcon from "@material-ui/icons/Settings";
 import MoreIcon from "@material-ui/icons/MoreVert";
 
+//Navbar Component
 const Navbar = () => {
   const useStyles = makeStyles((theme) => ({
     grow: {
@@ -20,6 +27,9 @@ const Navbar = () => {
     },
     menuButton: {
       marginRight: theme.spacing(2),
+    },
+    squareButton: {
+      margin: theme.spacing(1),
     },
     Avatar: {
       margin: 0,
@@ -50,10 +60,14 @@ const Navbar = () => {
       "&:hover": {
         backgroundColor: fade(theme.palette.common.white, 0.25),
       },
+      borderStyle: "solid",
+      borderWidth: "1px",
+      borderColor: fade(theme.palette.common.black, 0.3),
       marginRight: theme.spacing(5),
       marginLeft: 0,
       width: "100%",
       [theme.breakpoints.up("sm")]: {
+        paddingRight: "250px",
         marginLeft: theme.spacing(3),
         width: "auto",
       },
@@ -101,6 +115,16 @@ const Navbar = () => {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  //Retrieves isLoggedIn state
+  const isAuthenticated = useSelector(isLoggedIn);
+
+  //Handle logOut action
+  const dispatch = useDispatch();
+  const handleLogout = useCallback(() => {
+    handleMenuClose();
+    dispatch(logOut());
+  }, [dispatch]);
+
   const handleProfileMenuOpen = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
@@ -119,7 +143,7 @@ const Navbar = () => {
   };
 
   const menuId = "primary-search-account-menu";
-  const renderMenu = (
+  const renderProfileMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -131,6 +155,7 @@ const Navbar = () => {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
 
@@ -175,14 +200,16 @@ const Navbar = () => {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.logoButton}
-            disableFocusRipple={true}
-            disableRipple
-          >
-            <img src="logo.svg" className={classes.logo} />
-          </IconButton>
+          <Link href="/">
+            <IconButton
+              edge="start"
+              className={classes.logoButton}
+              disableFocusRipple={true}
+              disableRipple
+            >
+              <img src="logo.svg" className={classes.logo} />
+            </IconButton>
+          </Link>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -193,31 +220,65 @@ const Navbar = () => {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-              inputProps={{ "aria-label": "search" }}
+              inputProps={{ "aria-label": "search", variant: "outlined" }}
             />
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show favourite videos" color="inherit">
-              <StarIcon />
-            </IconButton>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <Avatar src="logo.png" className={classes.Avatar} />
-            </IconButton>
-            <IconButton
-              edge="end"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="show settings"
-            >
-              <SettingsIcon />
-            </IconButton>
+            {isAuthenticated ? (
+              <>
+                <IconButton aria-label="show favourite videos" color="inherit">
+                  <StarIcon />
+                </IconButton>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  color="inherit"
+                  onClick={handleProfileMenuOpen}
+                >
+                  <Avatar src="logo.png" className={classes.Avatar} />
+                </IconButton>
+                <IconButton
+                  edge="end"
+                  className={classes.menuButton}
+                  color="inherit"
+                  aria-label="show settings"
+                >
+                  <SettingsIcon />
+                </IconButton>
+              </>
+            ) : (
+              <>
+                <Button
+                  aria-label="Signup"
+                  variant="outlined"
+                  color="secondary"
+                  className={classes.squareButton}
+                >
+                  Signup
+                </Button>
+                <Link href="/login">
+                  <Button
+                    href="/login"
+                    aria-label="Login"
+                    variant="contained"
+                    color="secondary"
+                    className={classes.squareButton}
+                  >
+                    Login
+                  </Button>
+                </Link>
+                <IconButton
+                  edge="end"
+                  className={classes.menuButton}
+                  color="inherit"
+                  aria-label="show settings"
+                >
+                  <SettingsIcon />
+                </IconButton>
+              </>
+            )}
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -233,7 +294,7 @@ const Navbar = () => {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
+      {renderProfileMenu}
     </div>
   );
 };

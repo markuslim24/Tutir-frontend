@@ -1,17 +1,18 @@
-import { Store } from '@reduxjs/toolkit';
+import { Store } from "@reduxjs/toolkit";
 
 const { createSlice } = require("@reduxjs/toolkit");
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState: { loggedIn: false },
   reducers: {
     setSession(state: any, action: any) {
       return action.payload;
     },
-  }
+  },
 });
 
+//State selectors
 export function isLoggedIn(state: any): boolean {
   return state.auth.loggedIn;
 }
@@ -34,11 +35,12 @@ export function getRefreshExpiryMs(state: any): number {
 
 const { setSession } = authSlice.actions;
 
+//actions
 export function initializeAuthState() {
-  let loggedIn = window.localStorage.getItem('auth.loggedIn') === 'true';
-  let session = {}; 
+  let loggedIn = window.localStorage.getItem("auth.loggedIn") === "true";
+  let session = {};
   if (loggedIn) {
-    session = JSON.parse(window.localStorage.getItem('auth.session') || '');
+    session = JSON.parse(window.localStorage.getItem("auth.session") || "");
   }
   return setSession({
     loggedIn: loggedIn,
@@ -48,11 +50,11 @@ export function initializeAuthState() {
 
 function storeAuthState(auth: any) {
   if (auth.loggedIn) {
-    window.localStorage.setItem('auth.loggedIn', 'true');
-    window.localStorage.setItem('auth.session', JSON.stringify(auth.session));
+    window.localStorage.setItem("auth.loggedIn", "true");
+    window.localStorage.setItem("auth.session", JSON.stringify(auth.session));
   } else {
-    window.localStorage.removeItem('auth.loggedIn');
-    window.localStorage.removeItem('auth.session');
+    window.localStorage.removeItem("auth.loggedIn");
+    window.localStorage.removeItem("auth.session");
   }
 }
 
