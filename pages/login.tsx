@@ -14,7 +14,7 @@ export default function Login() {
   const dispatch = useDispatch();
 
   //send email/password to backend for authentication
-  const send = useCallback(async () => {
+  const attemptLogin = useCallback(async () => {
     try {
       let res = await client.post("/auth/login", {
         email: email,
@@ -48,7 +48,7 @@ export default function Login() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={send}>Login</button>
+      <button onClick={attemptLogin}>Login</button>
     </div>
   );
 }
