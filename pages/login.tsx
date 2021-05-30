@@ -8,7 +8,6 @@ import { client } from "../util/util";
 import Link from "next/link";
 
 //Mui imports
-import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -19,6 +18,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { FormControl } from "@material-ui/core";
+import Alerts from "../components/Alerts";
 
 function Copyright() {
   return (
@@ -49,23 +49,30 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  logoButton: {
-    marginBottom: theme.spacing(2),
+  logo: { maxWidth: 200, marginBottom: theme.spacing(2), cursor: "pointer" },
+  link: {
     "&:hover": {
-      backgroundColor: "transparent",
+      textDecoration: "underline",
+      cursor: "pointer",
     },
   },
-  logo: { maxWidth: 200 },
 }));
 
 //Login Page
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isAlert, setIsAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const router = useRouter();
   const dispatch = useDispatch();
 
   const classes = useStyles();
+
+  const handleAlerts = (message: string) => {
+    setIsAlert(true);
+    setAlertMessage(message);
+  };
 
   //send email/password to backend for authentication
   const attemptLogin = useCallback(async () => {
@@ -80,9 +87,9 @@ export default function Login() {
       if (axios.isAxiosError(err)) {
         let code = err.response?.data.code;
         if (code === "invalid_params") {
-          return alert("invalid_params");
+          return handleAlerts("invalid params!");
         } else if (code === "auth_login_failed") {
-          return alert("incorrect password or email");
+          return handleAlerts("Incorrect username/password!");
         }
       }
       throw err;
@@ -90,79 +97,85 @@ export default function Login() {
   }, [email, password, router, dispatch]);
 
   return (
-    <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
-        <Link href="/">
-          <IconButton
-            edge="start"
-            className={classes.logoButton}
-            disableFocusRipple={true}
-            disableRipple
-          >
+    <>
+      <Container component="main" maxWidth="xs">
+        <div className={classes.paper}>
+          <Link href="/">
             <img src="logo.svg" className={classes.logo} />
-          </IconButton>
-        </Link>
-        <Typography component="h1" variant="h5">
-          Login
-        </Typography>
-        <FormControl className={classes.form}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            label="Email Address"
-            value={email}
-            autoComplete="email"
-            autoFocus
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            label="Password"
-            type="password"
-            value={password}
-            autoComplete="current-password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={attemptLogin}
-          >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#">
-                <Typography variant="body2" color="inherit">
-                  Forgot password?
-                </Typography>
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#">
-                <Typography variant="body2" color="inherit">
+          </Link>
+          <Typography component="h1" variant="h5">
+            Login
+          </Typography>
+          <FormControl className={classes.form}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              label="Email Address"
+              value={email}
+              autoComplete="email"
+              autoFocus
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              label="Password"
+              type="password"
+              value={password}
+              autoComplete="current-password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Alerts
+              isAlert={isAlert}
+              setIsAlert={setIsAlert}
+              message={alertMessage}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={attemptLogin}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#">
+                  <Typography
+                    variant="body2"
+                    color="primary"
+                    className={classes.link}
+                  >
+                    Forgot password?
+                  </Typography>
+                </Link>
+              </Grid>
+              <Grid item onClick={() => router.push("/signUp")}>
+                <Typography
+                  variant="body2"
+                  color="primary"
+                  className={classes.link}
+                >
                   "Don't have an account? Sign Up"
                 </Typography>
-              </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </FormControl>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+          </FormControl>
+        </div>
+        <Box mt={8}>
+          <Copyright />
+        </Box>
+      </Container>
+    </>
   );
 }

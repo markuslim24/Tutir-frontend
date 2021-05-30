@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { isLoggedIn, logOut } from "../store/slice/auth";
+import { useRouter } from "next/router";
 
 //Materialui imports
 import { fade, makeStyles } from "@material-ui/core/styles";
@@ -11,19 +12,20 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import InputBase from "@material-ui/core/InputBase";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import SearchIcon from "@material-ui/icons/Search";
 import StarIcon from "@material-ui/icons/Star";
 import Avatar from "@material-ui/core/Avatar";
 import SettingsIcon from "@material-ui/icons/Settings";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import SearchBar from './SearchBar';
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import HistoryIcon from "@material-ui/icons/History";
+import SearchBar from "./SearchBar";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
-    backgroundColor: "#FFFFFF"
+    backgroundColor: "#FFFFFF",
   },
   grow: {
     flexGrow: 1,
@@ -56,47 +58,6 @@ const useStyles = makeStyles((theme) => ({
       display: "block",
     },
   },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    borderStyle: "solid",
-    borderWidth: "1px",
-    borderColor: fade(theme.palette.common.black, 0.3),
-    marginRight: theme.spacing(5),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      paddingRight: "250px",
-      marginLeft: theme.spacing(3),
-      width: "auto",
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
   sectionDesktop: {
     display: "none",
     [theme.breakpoints.up("md")]: {
@@ -123,6 +84,8 @@ export default function Navbar() {
   //Retrieves isLoggedIn state
   const isAuthenticated = useSelector(isLoggedIn);
 
+  const router = useRouter();
+
   //Handle logOut action
   const dispatch = useDispatch();
   const handleLogout = useCallback(() => {
@@ -147,6 +110,14 @@ export default function Navbar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleLoginButton = () => {
+    router.push("/login");
+  };
+
+  const handleSignUpButton = () => {
+    router.push("/signUp");
+  };
+
   const menuId = "primary-search-account-menu";
   const renderProfileMenu = (
     <Menu
@@ -158,14 +129,23 @@ export default function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <AccountCircleIcon />
+        Profile
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <HistoryIcon />
+        History
+      </MenuItem>
+      <MenuItem onClick={handleLogout}>
+        <ExitToAppIcon />
+        Logout
+      </MenuItem>
     </Menu>
   );
 
   const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
+  const renderMobileMenu = isAuthenticated ? (
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -176,20 +156,20 @@ export default function Navbar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton aria-label="show new mails" color="inherit">
+        <IconButton aria-label="show favourite videos" color="inherit">
           <StarIcon />
         </IconButton>
         <p>Favourites</p>
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show new notifications" color="inherit">
-          <Avatar src="logo.png" className={classes.Avatar} />
+        <IconButton aria-label="show profile of current user" color="inherit">
+          <Avatar src="Avatar.png" className={classes.Avatar} />
         </IconButton>
         <p>Profile</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
-          aria-label="account of current user"
+          aria-label="show settings"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
           color="inherit"
@@ -198,9 +178,34 @@ export default function Navbar() {
         </IconButton>
         <p>Settings</p>
       </MenuItem>
+      <MenuItem onClick={handleLogout}>
+        <IconButton aria-label="Logout" aria-haspopup="true" color="inherit">
+          <ExitToAppIcon />
+        </IconButton>
+        <p>Logout</p>
+      </MenuItem>
+    </Menu>
+  ) : (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem onClick={handleLoginButton}>
+        <p>Login</p>
+      </MenuItem>
+      <MenuItem onClick={handleSignUpButton}>
+        <p>Sign Up</p>
+      </MenuItem>
+      <MenuItem>
+        <p>Settings</p>
+      </MenuItem>
     </Menu>
   );
-
   return (
     <div className={classes.grow}>
       <AppBar position="static" className={classes.appBar}>
@@ -212,19 +217,6 @@ export default function Navbar() {
           </Link>
           <div className={classes.grow} />
           <SearchBar />
-          {/* <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search", variant: "outlined" }}
-            />
-          </div> */}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {isAuthenticated ? (
@@ -239,7 +231,7 @@ export default function Navbar() {
                   color="inherit"
                   onClick={handleProfileMenuOpen}
                 >
-                  <Avatar src="logo.png" className={classes.Avatar} />
+                  <Avatar src="Avatar.png" className={classes.Avatar} />
                 </IconButton>
                 <IconButton
                   edge="end"
@@ -257,24 +249,25 @@ export default function Navbar() {
                   variant="outlined"
                   color="secondary"
                   className={classes.squareButton}
+                  onClick={handleLoginButton}
                 >
                   Signup
                 </Button>
-                <Link href="/login">
-                  <Button
-                    href="/login"
-                    aria-label="Login"
-                    variant="contained"
-                    color="secondary"
-                    className={classes.squareButton}
-                  >
-                    Login
-                  </Button>
-                </Link>
+
+                <Button
+                  aria-label="Login"
+                  variant="contained"
+                  color="secondary"
+                  className={classes.squareButton}
+                  onClick={handleLoginButton}
+                >
+                  Login
+                </Button>
+
                 <IconButton
                   edge="end"
                   className={classes.menuButton}
-                  color="inherit"
+                  color="secondary"
                   aria-label="show settings"
                 >
                   <SettingsIcon />
@@ -288,7 +281,7 @@ export default function Navbar() {
               aria-controls={mobileMenuId}
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
-              color="inherit"
+              color="secondary"
             >
               <MoreIcon />
             </IconButton>
