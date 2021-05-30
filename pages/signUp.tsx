@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
+import { useDispatch, useStore } from "react-redux";
 import { useRouter } from "next/dist/client/router";
 
 import Button from "@material-ui/core/Button";
@@ -59,6 +60,8 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const attemptSignUp = useCallback(async () => {}, []);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -148,6 +151,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={attemptSignUp}
           >
             Sign Up
           </Button>
