@@ -11,25 +11,20 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import InputBase from "@material-ui/core/InputBase";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import SearchIcon from "@material-ui/icons/Search";
 import StarIcon from "@material-ui/icons/Star";
 import Avatar from "@material-ui/core/Avatar";
 import SettingsIcon from "@material-ui/icons/Settings";
 import MoreIcon from "@material-ui/icons/MoreVert";
-<<<<<<< HEAD
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import HistoryIcon from "@material-ui/icons/History";
-=======
-import SearchBar from './SearchBar';
->>>>>>> 30e5dac8ac247a445acb4bbe211818933f45f976
+import SearchBar from "./SearchBar";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
-    backgroundColor: "#FFFFFF"
+    backgroundColor: "#FFFFFF",
   },
   grow: {
     flexGrow: 1,
@@ -227,19 +222,6 @@ export default function Navbar() {
           </Link>
           <div className={classes.grow} />
           <SearchBar />
-          {/* <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search", variant: "outlined" }}
-            />
-          </div> */}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {isAuthenticated ? (
@@ -289,7 +271,7 @@ export default function Navbar() {
                 <IconButton
                   edge="end"
                   className={classes.menuButton}
-                  color="inherit"
+                  color="secondary"
                   aria-label="show settings"
                 >
                   <SettingsIcon />
