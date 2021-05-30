@@ -22,7 +22,6 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import HistoryIcon from "@material-ui/icons/History";
 import SearchBar from "./SearchBar";
-import FiberNewIcon from "@material-ui/icons/FiberNew";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
