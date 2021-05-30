@@ -8,7 +8,6 @@ import { client } from "../util/util";
 import Link from "next/link";
 
 //Mui imports
-import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -49,13 +48,13 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  logoButton: {
-    marginBottom: theme.spacing(2),
+  logo: { maxWidth: 200, marginBottom: theme.spacing(2), cursor: "pointer" },
+  link: {
     "&:hover": {
-      backgroundColor: "transparent",
+      textDecoration: "underline",
+      cursor: "pointer",
     },
   },
-  logo: { maxWidth: 200 },
 }));
 
 //Login Page
@@ -93,14 +92,7 @@ export default function Login() {
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
         <Link href="/">
-          <IconButton
-            edge="start"
-            className={classes.logoButton}
-            disableFocusRipple={true}
-            disableRipple
-          >
-            <img src="logo.svg" className={classes.logo} />
-          </IconButton>
+          <img src="logo.svg" className={classes.logo} />
         </Link>
         <Typography component="h1" variant="h5">
           Login
@@ -145,17 +137,23 @@ export default function Login() {
           <Grid container>
             <Grid item xs>
               <Link href="#">
-                <Typography variant="body2" color="inherit">
+                <Typography
+                  variant="body2"
+                  color="primary"
+                  className={classes.link}
+                >
                   Forgot password?
                 </Typography>
               </Link>
             </Grid>
-            <Grid item>
-              <Link href="#">
-                <Typography variant="body2" color="inherit">
-                  "Don't have an account? Sign Up"
-                </Typography>
-              </Link>
+            <Grid item onClick={() => router.push("/signUp")}>
+              <Typography
+                variant="body2"
+                color="primary"
+                className={classes.link}
+              >
+                "Don't have an account? Sign Up"
+              </Typography>
             </Grid>
           </Grid>
         </FormControl>
