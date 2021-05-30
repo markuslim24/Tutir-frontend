@@ -18,6 +18,9 @@ import StarIcon from "@material-ui/icons/Star";
 import Avatar from "@material-ui/core/Avatar";
 import SettingsIcon from "@material-ui/icons/Settings";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import HistoryIcon from "@material-ui/icons/History";
 
 //Navbar Component
 const Navbar = () => {
@@ -153,9 +156,18 @@ const Navbar = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <AccountCircleIcon />
+        Profile
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <HistoryIcon />
+        History
+      </MenuItem>
+      <MenuItem onClick={handleLogout}>
+        <ExitToAppIcon />
+        Logout
+      </MenuItem>
     </Menu>
   );
 
