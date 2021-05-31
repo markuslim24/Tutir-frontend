@@ -64,6 +64,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [isAlert, setIsAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const [isLoginDisabled, setIsLoginDisabled] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -75,8 +76,9 @@ export default function Login() {
   };
 
   //send email/password to backend for authentication
-  const attemptLogin = useCallback(async () => {
+  const attemptLogin = async () => {
     try {
+      setIsLoginDisabled(true);
       let res = await client.post("/auth/login", {
         email: email,
         password: password,
@@ -93,8 +95,10 @@ export default function Login() {
         }
       }
       throw err;
+    } finally {
+      setIsLoginDisabled(false);
     }
-  }, [email, password, router, dispatch]);
+  };
 
   return (
     <>
@@ -135,6 +139,7 @@ export default function Login() {
             />
             <Alerts
               isAlert={isAlert}
+              isError={true}
               setIsAlert={setIsAlert}
               message={alertMessage}
             />
@@ -143,6 +148,7 @@ export default function Login() {
               fullWidth
               variant="contained"
               color="primary"
+              disabled={isLoginDisabled}
               className={classes.submit}
               onClick={attemptLogin}
             >

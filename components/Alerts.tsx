@@ -17,14 +17,14 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Alerts = ({ isAlert, setIsAlert, message }: any) => {
+const Alerts = ({ isAlert, isError, setIsAlert, message }: any) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       {isAlert ? (
         <Alert
-          severity="error"
+          severity={isError ? "error" : "success"}
           onClose={() => {
             setIsAlert(false);
           }}

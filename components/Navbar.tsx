@@ -249,9 +249,9 @@ export default function Navbar() {
                   variant="outlined"
                   color="secondary"
                   className={classes.squareButton}
-                  onClick={handleLoginButton}
+                  onClick={handleSignUpButton}
                 >
-                  Signup
+                  Sign up
                 </Button>
 
                 <Button
