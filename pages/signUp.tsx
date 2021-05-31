@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useRouter } from "next/dist/client/router";
+import Link from "next/link";
 
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import FormControl from "@material-ui/core/FormControl";
@@ -21,8 +21,10 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link href="/">
+        <Typography color="inherit" display="inline">
+          Tutir
+        </Typography>
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
