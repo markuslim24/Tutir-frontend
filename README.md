@@ -10,6 +10,11 @@ As students, we often look online for tutorial videos to better understand what 
 
 Tutir is a video sharing platform that enables students to view tutorial videos or notes created by their very own peers. Viewers can pay tips to the content creators to encourage them to continue creating more quality content.
 
+# Aim 
+
+We hope to create a convenient video-sharing platform where university students can easily view, create and share educational videos relating to various university courses.
+
+
 # User stories
 
 1. Students will be able to look through tutorial videos on skills or topics they are interested to learn. They can also rate the videos.
