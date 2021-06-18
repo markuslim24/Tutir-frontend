@@ -7,7 +7,6 @@ import { isLoggedIn, logOut } from "../store/slice/auth";
 import { useRouter } from "next/router";
 
 //Materialui imports
-import { useStyles } from "../styles/components/NavbarStyles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
@@ -22,6 +21,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import HistoryIcon from "@material-ui/icons/History";
 import SearchBar from "./SearchBar";
+import useStyles from "../styles/components/NavbarStyle";
 
 //Navbar Component
 export default function Navbar() {
@@ -46,6 +46,7 @@ export default function Navbar() {
 
   const handleProfileMenuOpen = (event: any) => {
     setAnchorEl(event.currentTarget);
+    router.push("/profile");
   };
 
   const handleMobileMenuClose = () => {
