@@ -7,7 +7,7 @@ import { isLoggedIn, logOut } from "../store/slice/auth";
 import { useRouter } from "next/router";
 
 //Materialui imports
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { useStyles } from "../styles/components/NavbarStyles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
@@ -22,55 +22,6 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import HistoryIcon from "@material-ui/icons/History";
 import SearchBar from "./SearchBar";
-
-const useStyles = makeStyles((theme) => ({
-  appBar: {
-    backgroundColor: "#FFFFFF",
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  squareButton: {
-    margin: theme.spacing(1),
-  },
-  Avatar: {
-    margin: 0,
-    padding: 0,
-    width: "24px",
-    height: "24px",
-  },
-  logoButton: {
-    marginRight: theme.spacing(2),
-    "&:hover": {
-      backgroundColor: "transparent",
-    },
-  },
-  logo: {
-    maxWidth: 80,
-    marginRight: "8px",
-  },
-  title: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
-    },
-  },
-  sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
-    },
-  },
-  sectionMobile: {
-    display: "flex",
-    [theme.breakpoints.up("md")]: {
-      display: "none",
-    },
-  },
-}));
 
 //Navbar Component
 export default function Navbar() {
