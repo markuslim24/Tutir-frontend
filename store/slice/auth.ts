@@ -1,5 +1,5 @@
 import { Store } from "@reduxjs/toolkit";
-
+import router from "next/router";
 const { createSlice } = require("@reduxjs/toolkit");
 
 const authSlice = createSlice({

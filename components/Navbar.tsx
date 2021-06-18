@@ -46,7 +46,6 @@ export default function Navbar() {
 
   const handleProfileMenuOpen = (event: any) => {
     setAnchorEl(event.currentTarget);
-    router.push("/profile");
   };
 
   const handleMobileMenuClose = () => {
@@ -70,6 +69,10 @@ export default function Navbar() {
     router.push("/signUp");
   };
 
+  const handleProfileButton = () => {
+    router.push("/profile");
+  };
+
   const menuId = "primary-search-account-menu";
   const renderProfileMenu = (
     <Menu
@@ -81,7 +84,7 @@ export default function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem onClick={handleProfileButton}>
         <AccountCircleIcon />
         Profile
       </MenuItem>
