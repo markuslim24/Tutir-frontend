@@ -9,8 +9,8 @@ const theme = createMuiTheme({
       main: "#179e8b",
     },
     background: {
-      default: "#FAF9F9"
-    }
+      default: "#FAF9F9",
+    },
   },
 });
 
