@@ -19,10 +19,15 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     store.dispatch(initializeAuthState());
+    //remove server-side injected CSS
+    const jssStyles = document.querySelector("#jss-server-side");
+    if (jssStyles) {
+      jssStyles.parentElement!.removeChild(jssStyles);
+    }
   }, []);
   return (
     <Provider store={store}>
-      <ThemeProvider theme={themetmp}>
+      <ThemeProvider theme={theme(false)}>
         <CssBaseline>
           <Component {...pageProps} />
         </CssBaseline>

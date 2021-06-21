@@ -21,7 +21,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import HistoryIcon from "@material-ui/icons/History";
 import SearchBar from "./SearchBar";
-import useStyles from "../styles/components/NavbarStyle";
+import useStyles from "../styles/components/navbarStyle";
 
 //Navbar Component
 export default function Navbar() {
@@ -42,6 +42,7 @@ export default function Navbar() {
   const handleLogout = useCallback(() => {
     handleMenuClose();
     dispatch(logOut());
+    router.push("/");
   }, [dispatch]);
 
   const handleProfileMenuOpen = (event: any) => {
@@ -70,6 +71,7 @@ export default function Navbar() {
   };
 
   const handleProfileButton = () => {
+    handleMenuClose();
     router.push("/profile");
   };
 

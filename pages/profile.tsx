@@ -1,6 +1,7 @@
 import React from "react";
 import { getUser } from "../store/slice/auth";
 import { useSelector } from "react-redux";
+import { isLoggedIn } from "../store/slice/auth";
 
 import Navbar from "../components/Navbar";
 import Avatar from "@material-ui/core/Avatar";
@@ -12,6 +13,7 @@ import { useStyles } from "../styles/pages/profileStyle";
 
 export default function Profile() {
   const classes = useStyles();
+  const isAuth = useSelector(isLoggedIn);
   const user = useSelector(getUser);
 
   return (
@@ -22,7 +24,7 @@ export default function Profile() {
           <Avatar src="Avatar.png" className={classes.avatar} />
           <div className={classes.profileInfo}>
             <Typography variant="h4" className={classes.greeting}>
-              Hi {user.name}
+              {isAuth ? "Hi " + user.name : "Not Authenticated"}
             </Typography>
             <Button variant="outlined" className={classes.editProfileButton}>
               Edit Profile
