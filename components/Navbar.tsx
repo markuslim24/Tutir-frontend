@@ -73,6 +73,10 @@ export default function Navbar() {
     router.push("/profile");
   };
 
+  const handleSettingsButton = () => {
+    router.push("/settings");
+  };
+
   const menuId = "primary-search-account-menu";
   const renderProfileMenu = (
     <Menu
@@ -128,6 +132,7 @@ export default function Navbar() {
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
           color="inherit"
+          onClick={handleSettingsButton}
         >
           <SettingsIcon />
         </IconButton>
@@ -156,7 +161,7 @@ export default function Navbar() {
       <MenuItem onClick={handleSignUpButton}>
         <p>Sign Up</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={handleSettingsButton}>
         <p>Settings</p>
       </MenuItem>
     </Menu>
@@ -224,6 +229,7 @@ export default function Navbar() {
                   className={classes.menuButton}
                   color="secondary"
                   aria-label="show settings"
+                  onClick={handleSettingsButton}
                 >
                   <SettingsIcon />
                 </IconButton>

@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import { useRouter } from "next/dist/client/router";
-import Link from "next/link";
-import { getUser, isLoggedIn } from "../store/slice/auth";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { getUser } from "../store/slice/auth";
+import { useSelector } from "react-redux";
 
 import Navbar from "../components/Navbar";
 import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
-import Image from "next/image";
 import Button from "@material-ui/core/Button";
 import VideoTable from "../components/VideoTable";
 import { Typography } from "@material-ui/core";
