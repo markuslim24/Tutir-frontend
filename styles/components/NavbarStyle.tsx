@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: theme.palette.background.paper,
   },
   grow: {
     flexGrow: 1,

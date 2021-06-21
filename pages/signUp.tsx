@@ -13,20 +13,15 @@ import FormControl from "@material-ui/core/FormControl";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { client } from '../util/util';
-import axios from 'axios';
-import Alerts from '../components/Alerts';
+import { client } from "../util/util";
+import axios from "axios";
+import Alerts from "../components/Alerts";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link href="/">
-        <Typography color="inherit" display="inline">
-          Tutir
-        </Typography>
-      </Link>{" "}
-      {new Date().getFullYear()}
+      <Link href="/">Tutir</Link> {new Date().getFullYear()}
       {"."}
     </Typography>
   );
@@ -73,24 +68,28 @@ export default function SignUp() {
   };
   const attemptSignUp = async () => {
     if (password !== confirmPassword) {
-      return handleAlerts(true, 'Passwords do not match');
+      return handleAlerts(true, "Passwords do not match");
     }
     try {
       setIsSignUpDisabled(true);
-      let res = await client.post('/auth/signUp', {name: name, email: email, password: password});
-      handleAlerts(false, 'Sign up is successful. You may now login.');
-    } catch(err) {
+      let res = await client.post("/auth/signUp", {
+        name: name,
+        email: email,
+        password: password,
+      });
+      handleAlerts(false, "Sign up is successful. You may now login.");
+    } catch (err) {
       if (axios.isAxiosError(err)) {
         let errCode = err.response?.data.code;
-        if (errCode === 'user_already_exists') {
-          return handleAlerts(true, 'Email already in use');
+        if (errCode === "user_already_exists") {
+          return handleAlerts(true, "Email already in use");
         }
       }
       throw err;
     } finally {
       setIsSignUpDisabled(false);
     }
-  }
+  };
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

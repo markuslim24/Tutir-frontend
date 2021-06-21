@@ -24,12 +24,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link href="/">
-        <Typography color="inherit" display="inline">
-          Tutir
-        </Typography>
-      </Link>{" "}
-      {new Date().getFullYear()}
+      <Link href="/">Tutir</Link> {new Date().getFullYear()}
       {"."}
     </Typography>
   );

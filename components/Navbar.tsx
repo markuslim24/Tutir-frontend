@@ -21,7 +21,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import HistoryIcon from "@material-ui/icons/History";
 import SearchBar from "./SearchBar";
-import useStyles from "../styles/components/NavbarStyle";
+import useStyles from "../styles/components/navbarStyle";
 
 //Navbar Component
 export default function Navbar() {
@@ -42,6 +42,7 @@ export default function Navbar() {
   const handleLogout = useCallback(() => {
     handleMenuClose();
     dispatch(logOut());
+    router.push("/");
   }, [dispatch]);
 
   const handleProfileMenuOpen = (event: any) => {
@@ -70,7 +71,12 @@ export default function Navbar() {
   };
 
   const handleProfileButton = () => {
+    handleMenuClose();
     router.push("/profile");
+  };
+
+  const handleSettingsButton = () => {
+    router.push("/settings");
   };
 
   const menuId = "primary-search-account-menu";
@@ -128,6 +134,7 @@ export default function Navbar() {
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
           color="inherit"
+          onClick={handleSettingsButton}
         >
           <SettingsIcon />
         </IconButton>
@@ -156,7 +163,7 @@ export default function Navbar() {
       <MenuItem onClick={handleSignUpButton}>
         <p>Sign Up</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={handleSettingsButton}>
         <p>Settings</p>
       </MenuItem>
     </Menu>
@@ -224,6 +231,7 @@ export default function Navbar() {
                   className={classes.menuButton}
                   color="secondary"
                   aria-label="show settings"
+                  onClick={handleSettingsButton}
                 >
                   <SettingsIcon />
                 </IconButton>
