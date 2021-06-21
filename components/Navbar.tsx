@@ -21,7 +21,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import HistoryIcon from "@material-ui/icons/History";
 import SearchBar from "./SearchBar";
-import useStyles from "../styles/components/navbarStyle";
+import useStyles from "../styles/components/NavbarStyle";
 
 //Navbar Component
 export default function Navbar() {
