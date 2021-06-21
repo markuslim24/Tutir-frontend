@@ -10,28 +10,8 @@ import Container from "@material-ui/core/Container";
 import Image from "next/image";
 import Button from "@material-ui/core/Button";
 import VideoTable from "../components/VideoTable";
-import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
-
-const useStyles = makeStyles({
-  profileBar: {
-    margin: "20px 0px",
-    display: "flex",
-    flexDirection: "row",
-    position: "relative",
-  },
-  avatar: {
-    alignSelf: "center",
-    width: "100px",
-    height: "100px",
-  },
-  profileInfo: { marginLeft: "20px", alignSelf: "center" },
-  greeting: {
-    position: "relative",
-    padding: "4px",
-  },
-  editProfileButton: { position: "relative", top: "0px" },
-});
+import { useStyles } from "../styles/pages/profileStyle";
 
 export default function Profile() {
   const classes = useStyles();
