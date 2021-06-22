@@ -14,7 +14,13 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
   Avatar: {
-    margin: 0,
+    margin: theme.spacing(1),
+    padding: 0,
+    width: "24px",
+    height: "24px",
+  },
+  mobileMenuIcons: {
+    margin: theme.spacing(1),
     padding: 0,
     width: "24px",
     height: "24px",

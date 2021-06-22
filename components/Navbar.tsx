@@ -117,33 +117,19 @@ export default function Navbar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton aria-label="show favourite videos" color="inherit">
-          <StarIcon />
-        </IconButton>
+        <StarIcon className={classes.mobileMenuIcons} />
         <p>Favourites</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show profile of current user" color="inherit">
-          <Avatar src="Avatar.png" className={classes.Avatar} />
-        </IconButton>
+      <MenuItem onClick={handleProfileButton}>
+        <Avatar src="Avatar.png" className={classes.Avatar} />
         <p>Profile</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="show settings"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-          onClick={handleSettingsButton}
-        >
-          <SettingsIcon />
-        </IconButton>
+      <MenuItem onClick={handleSettingsButton}>
+        <SettingsIcon className={classes.mobileMenuIcons} />
         <p>Settings</p>
       </MenuItem>
       <MenuItem onClick={handleLogout}>
-        <IconButton aria-label="Logout" aria-haspopup="true" color="inherit">
-          <ExitToAppIcon />
-        </IconButton>
+        <ExitToAppIcon className={classes.mobileMenuIcons} />
         <p>Logout</p>
       </MenuItem>
     </Menu>
