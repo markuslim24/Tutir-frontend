@@ -200,6 +200,7 @@ export default function Navbar() {
                   className={classes.menuButton}
                   color="primary"
                   aria-label="show settings"
+                  onClick={handleSettingsButton}
                 >
                   <SettingsIcon />
                 </IconButton>
