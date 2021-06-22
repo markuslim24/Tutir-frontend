@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: "flex",
       flexWrap: "wrap",
-      justifyContent: "space-around",
+      justifyContent: "center",
       backgroundColor: theme.palette.background.paper,
     },
     gridContainer: {
@@ -53,7 +53,7 @@ const Recommended = () => {
   return (
     <>
       <div className={classes.root}>
-        <Grid container xs={12} spacing={4} className={classes.gridContainer}>
+        <Grid container spacing={3} className={classes.gridContainer}>
           <Grid item xs={12}>
             <Typography variant="h5">Recommended</Typography>
           </Grid>
