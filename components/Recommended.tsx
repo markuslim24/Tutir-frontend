@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
     gridContainer: {
       width: "90%",
       height: "100%",
-      justifyContent: "center",
+      justifySelf: "center",
     },
     gridHeader: {
       margin: "10px 0px",
@@ -73,7 +73,7 @@ const Recommended = () => {
           {filteredDatas.map((filteredData) => (
             <Grid item key={filteredData.title} className={classes.gridItem}>
               <img src="/black.png" className={classes.img} />
-              <h3>{filteredData.thumbnail}</h3>
+              <h3>{filteredData.title}</h3>
             </Grid>
           ))}
         </Grid>
