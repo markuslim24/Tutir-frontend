@@ -70,6 +70,10 @@ export default function Navbar() {
     router.push("/signUp");
   };
 
+  const handleFavouritesButton = () => {
+    router.push("/favourites");
+  };
+
   const handleProfileButton = () => {
     handleMenuClose();
     router.push("/profile");
@@ -116,7 +120,7 @@ export default function Navbar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={handleFavouritesButton}>
         <StarIcon className={classes.mobileMenuIcons} />
         <p>Favourites</p>
       </MenuItem>
@@ -169,7 +173,11 @@ export default function Navbar() {
           <div className={classes.sectionDesktop}>
             {isAuthenticated ? (
               <>
-                <IconButton aria-label="show favourite videos" color="primary">
+                <IconButton
+                  aria-label="show favourite videos"
+                  color="primary"
+                  onClick={handleFavouritesButton}
+                >
                   <StarIcon />
                 </IconButton>
                 <IconButton
