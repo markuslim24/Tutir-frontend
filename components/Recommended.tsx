@@ -14,10 +14,21 @@ const useStyles = makeStyles((theme: Theme) =>
     gridContainer: {
       width: "90%",
       height: "100%",
+      justifySelf: "center",
+    },
+    gridHeader: {
+      margin: "10px 0px",
     },
     gridItem: {
-      height: "100%",
-      width: "200px",
+      [theme.breakpoints.down("xs")]: {
+        width: "100%",
+      },
+      [theme.breakpoints.up("sm")]: {
+        width: "50%",
+      },
+      [theme.breakpoints.up("lg")]: {
+        width: "25%",
+      },
     },
     img: {
       maxWidth: "100%",
@@ -55,14 +66,14 @@ const Recommended = () => {
       <div className={classes.root}>
         <Grid container spacing={3} className={classes.gridContainer}>
           <Grid item xs={12}>
-            <Typography variant="h5">Recommended</Typography>
+            <Typography variant="h5" className={classes.gridHeader}>
+              Recommended for you
+            </Typography>
           </Grid>
           {filteredDatas.map((filteredData) => (
-            <Grid item key={filteredData.title}>
-              <div className={classes.gridItem}>
-                <img src="/black.png" className={classes.img} />
-                <h3>{filteredData.thumbnail}</h3>
-              </div>
+            <Grid item key={filteredData.title} className={classes.gridItem}>
+              <img src="/black.png" className={classes.img} />
+              <h3>{filteredData.title}</h3>
             </Grid>
           ))}
         </Grid>
