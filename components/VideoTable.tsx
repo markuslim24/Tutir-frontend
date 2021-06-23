@@ -17,8 +17,9 @@ const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
-  title: {
-    flex: "1 1 auto",
+
+  uploadVideoButton: {
+    margin: "0px 25px",
   },
 });
 
@@ -51,18 +52,15 @@ export default function VideoTable() {
     <>
       <TableContainer component={Paper}>
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Videos
-          </Typography>
-          <Tooltip title="upload">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleUploadButton}
-            >
-              Upload Video
-            </Button>
-          </Tooltip>
+          <Typography variant="h6">Videos</Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleUploadButton}
+            className={classes.uploadVideoButton}
+          >
+            Upload Video
+          </Button>
         </Toolbar>
         <Table
           className={classes.table}
@@ -71,7 +69,7 @@ export default function VideoTable() {
         >
           <TableHead>
             <TableRow>
-              <TableCell>Video</TableCell>
+              <TableCell>Video Title</TableCell>
               <TableCell align="right">Date</TableCell>
               <TableCell align="right">Views</TableCell>
               <TableCell align="right">Comments</TableCell>
