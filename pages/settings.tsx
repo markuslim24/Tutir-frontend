@@ -1,13 +1,14 @@
-import React from "react";
-import Navbar from "../components/Navbar";
+import React, { useCallback } from "react";
 import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleDarkMode } from "../store/slice/darkMode";
+import { isPreferDarkMode } from "../store/slice/darkMode";
 
 import {
   Typography,
   Switch,
   FormControl,
   FormControlLabel,
-  FormGroup,
   FormLabel,
   Paper,
   Container,
@@ -23,6 +24,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Settings = () => {
+  const dispatch = useDispatch();
+  const isDarkModeEnabled = useSelector(isPreferDarkMode);
+  const handleDarkModeSwitch = useCallback(() => {
+    const tmp = !isDarkModeEnabled;
+    dispatch(toggleDarkMode(tmp));
+  }, [isDarkModeEnabled]);
+
   const router = useRouter();
   const classes = useStyles();
   return (
@@ -36,7 +44,12 @@ const Settings = () => {
           </FormLabel>
           <Paper className={classes.darkMode}>
             <FormControlLabel
-              control={<Switch />}
+              control={
+                <Switch
+                  checked={isDarkModeEnabled}
+                  onChange={handleDarkModeSwitch}
+                />
+              }
               label="Dark Mode"
               labelPlacement="start"
             />
