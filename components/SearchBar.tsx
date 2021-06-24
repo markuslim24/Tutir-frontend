@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "0",
     fontSize: "1rem",
     backgroundColor: theme.palette.background.default,
+    width: "100%",
   },
   searchButton: {
     padding: "0",
@@ -36,7 +37,7 @@ export default function SearchBar() {
       <input
         type="text"
         className={classes.searchInput}
-        placeholder="Search"
+        placeholder="Search Video..."
         onFocus={() => setFocussed(true)}
         onBlur={() => setFocussed(false)}
       />
