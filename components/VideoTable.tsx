@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Typography } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
@@ -11,6 +11,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
+import UploadVideoDialog from "./UploadVideoDialog";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
@@ -33,10 +34,6 @@ function createData(
   return { videoName, date, views, comments, likes };
 }
 
-const handleUploadButton = () => {
-  console.log("Pls handle this");
-};
-
 const rows = [
   createData("Video 1", "15/6/2021", 6.0, 24, 4.0),
   createData("Video 2", "15/6/2021", 9.0, 37, 4.3),
@@ -46,6 +43,16 @@ const rows = [
 ];
 
 export default function VideoTable() {
+  const [openForm, setOpenForm] = useState(false);
+
+  const handleUploadOpen = () => {
+    setOpenForm(true);
+  };
+
+  const handleUploadClose = () => {
+    setOpenForm(false);
+  };
+
   const classes = useStyles();
 
   return (
@@ -56,11 +63,15 @@ export default function VideoTable() {
           <Button
             variant="contained"
             color="primary"
-            onClick={handleUploadButton}
+            onClick={handleUploadOpen}
             className={classes.uploadVideoButton}
           >
             Upload Video
           </Button>
+          <UploadVideoDialog
+            openForm={openForm}
+            handleUploadClose={handleUploadClose}
+          />
         </Toolbar>
         <Table
           className={classes.table}
