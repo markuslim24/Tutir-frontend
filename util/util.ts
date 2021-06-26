@@ -15,7 +15,9 @@ const client = axios.create({
   withCredentials: true,
 });
 
-const protectedRoutes = ["/user", "/video/upload"];
+const protectedRoutes = [/user/, /\/video\/upload/];
+
+const optionalRoutes = [/\/video\?id=/];
 
 class LoginError extends Error {
   constructor() {
@@ -27,7 +29,6 @@ function refreshSession() {
   return client
     .get("/auth/refresh")
     .then((res) => {
-      alert("refresh token");
       store.dispatch(login(res.data.payload));
     })
     .catch((err) => {
@@ -43,7 +44,20 @@ function refreshSession() {
 
 client.interceptors.request.use(async (req) => {
   try {
-    if (!protectedRoutes.includes(req.url || "")) {
+    const url = req.url || "";
+    let isProtectedRoute = false;
+    let isOptionalRoute = false;
+    protectedRoutes.forEach(regex => {
+      if (url.match(regex)) {
+        isProtectedRoute = true;
+      }
+    });
+    optionalRoutes.forEach(regex => {
+      if (url.match(regex)) {
+        isOptionalRoute = true;
+      }
+    });
+    if (!isProtectedRoute && !isOptionalRoute) {
       return req;
     }
     let loggedIn = isLoggedIn(store.getState());
@@ -58,6 +72,8 @@ client.interceptors.request.use(async (req) => {
       }
       let sessionToken = getSessionToken(store.getState());
       req.headers = { Authorization: `Bearer ${sessionToken}` };
+      return req;
+    } else if (isOptionalRoute) {
       return req;
     }
     throw new LoginError();
