@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isRememberMe, setIsRememberMe] = useState(false);
   const [isAlert, setIsAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [isLoginDisabled, setIsLoginDisabled] = useState(false);
@@ -77,6 +78,7 @@ export default function Login() {
       let res = await client.post("/auth/login", {
         email: email,
         password: password,
+        rememberMe: isRememberMe,
       });
       dispatch(login(res.data.payload));
       router.push("/");
@@ -129,7 +131,13 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={
+                <Checkbox
+                  checked={isRememberMe}
+                  onChange={() => setIsRememberMe(!isRememberMe)}
+                  color="primary"
+                />
+              }
               label="Remember me"
             />
             <Alerts
