@@ -1,7 +1,9 @@
-import React from "react";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import React, { useState, useEffect } from "react";
+import { client } from "../util/util";
+import axios from "axios";
 
-import { Typography, Grid, Paper } from "@material-ui/core";
+import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import { Typography, Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,29 +39,30 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const exampleDatas = [
-  { thumbnail: "this", title: "Video1" },
-  { thumbnail: "better", title: "Video2" },
-  { thumbnail: "work", title: "Video3" },
-  { thumbnail: "well", title: "Video4" },
-  { thumbnail: "this", title: "Video5" },
-  { thumbnail: "better", title: "Video6" },
-  { thumbnail: "work", title: "Video7" },
-  { thumbnail: "well", title: "Video8" },
-  { thumbnail: "this", title: "Video9" },
-  { thumbnail: "better", title: "Video10" },
-  { thumbnail: "work", title: "Video11" },
-  { thumbnail: "well", title: "Video12" },
-  { thumbnail: "this", title: "Video13" },
-  { thumbnail: "better", title: "Video14" },
-  { thumbnail: "work", title: "Video15" },
-  { thumbnail: "well", title: "Video16" },
-];
-
-const filteredDatas = exampleDatas.slice(0, 8);
-
 const Recommended = () => {
   const classes = useStyles();
+  const [videos, setVideos] = useState([]);
+
+  useEffect(() => {
+    getVideos();
+  }, []);
+
+  async function getVideos() {
+    try {
+      let res = await client.get("/video");
+      setVideos([...res.data.payload]);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        let code = err.response?.data.code;
+        // if (code === "invalid_params") {
+        //   return handleAlerts("invalid params!");
+        // } else if (code === "auth_login_failed") {
+        //   return handleAlerts("Incorrect username/password!");
+        // }
+      }
+      throw err;
+    }
+  }
 
   return (
     <>
@@ -70,10 +73,10 @@ const Recommended = () => {
               Recommended for you
             </Typography>
           </Grid>
-          {filteredDatas.map((filteredData) => (
-            <Grid item key={filteredData.title} className={classes.gridItem}>
-              <img src="/black.png" className={classes.img} />
-              <h3>{filteredData.title}</h3>
+          {videos.map((video) => (
+            <Grid item key={video.id} className={classes.gridItem}>
+              <img src={video.thumbnailUrl} className={classes.img} />
+              <h3>{video.title}</h3>
             </Grid>
           ))}
         </Grid>
