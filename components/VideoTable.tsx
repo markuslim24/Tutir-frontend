@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+import { client } from "../util/util";
+import axios from "axios";
 
 import { Typography } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
@@ -43,6 +46,30 @@ const rows = [
 ];
 
 export default function VideoTable() {
+  const [tableData, setTableData] = useState([]);
+
+  useEffect(() => {
+    getTableData();
+  }, []);
+
+  async function getTableData() {
+    try {
+      let res = await client.get("/video");
+      const videos = res.data.payload;
+      setTableData([...videos]);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        let code = err.response?.data.code;
+        // if (code === "invalid_params") {
+        //   return handleAlerts("invalid params!");
+        // } else if (code === "auth_login_failed") {
+        //   return handleAlerts("Incorrect username/password!");
+        // }
+      }
+      throw err;
+    }
+  }
+
   const [openForm, setOpenForm] = useState(false);
 
   const handleUploadOpen = () => {
@@ -88,15 +115,15 @@ export default function VideoTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.videoName}>
+            {tableData.map((data) => (
+              <TableRow key={data.id}>
                 <TableCell component="th" scope="row">
-                  {row.videoName}
+                  {data.title}
                 </TableCell>
-                <TableCell align="right">{row.date}</TableCell>
-                <TableCell align="right">{row.views}</TableCell>
-                <TableCell align="right">{row.comments}</TableCell>
-                <TableCell align="right">{row.likes}</TableCell>
+                <TableCell align="right">{/*row.date*/}</TableCell>
+                <TableCell align="right">{/*row.views*/}</TableCell>
+                <TableCell align="right">{/*row.comments*/}</TableCell>
+                <TableCell align="right">{/*row.likes*/}</TableCell>
               </TableRow>
             ))}
           </TableBody>
