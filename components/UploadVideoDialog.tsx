@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 import Dropzone from "react-dropzone";
+import axios from "axios";
+import { client } from "../util/util";
 import {
   Button,
   Dialog,
@@ -11,8 +13,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import { Component } from "react";
-import { FormatListNumberedRtlOutlined } from "@material-ui/icons";
+import Alerts from "../components/Alerts";
 
 const UploadVideoDialog = ({ openForm, handleUploadClose }: any) => {
   const [videoFile, setVideoFile] = useState(null);
@@ -20,6 +21,14 @@ const UploadVideoDialog = ({ openForm, handleUploadClose }: any) => {
   const [description, setDescription] = useState("");
   const [notes, setNotes] = useState([]);
   const [thumbnail, setThumbnail] = useState(null);
+
+  const [isAlert, setIsAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+
+  const handleAlerts = (message: string) => {
+    setIsAlert(true);
+    setAlertMessage(message);
+  };
 
   function onClose(): void {
     handleUploadClose();
@@ -45,12 +54,32 @@ const UploadVideoDialog = ({ openForm, handleUploadClose }: any) => {
     }
   }
 
-  function handleSubmit(): void {
+  async function handleSubmit() {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
-    formData.append("video", videoFile, videoFile.name);
-    formData.append("thumbnail", thumbnail, thumbnail.name);
+    formData.append("video", videoFile);
+    formData.append("thumbnail", thumbnail);
+    notes.forEach((note) => {
+      formData.append("notes", note);
+    });
+    formData.append("tags", "test2");
+
+    try {
+      let res = await client.post("/video/upload", formData);
+      onClose();
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        let code = err.response?.data.code;
+        // if (code === "invalid_params") {
+        //   return handleAlerts("invalid params!");
+        // } else if (code === "auth_login_failed") {
+        //   return handleAlerts("Incorrect username/password!");
+        // }
+      }
+      throw err;
+    } finally {
+    }
   }
 
   return (
@@ -123,7 +152,12 @@ const UploadVideoDialog = ({ openForm, handleUploadClose }: any) => {
             ? notes.map((note) => <h3 key={note.name}>{note.name}</h3>)
             : ""}
         </DialogContent>
-
+        <Alerts
+          isAlert={isAlert}
+          isError={true}
+          setIsAlert={setIsAlert}
+          message={alertMessage}
+        />
         <DialogActions>
           <Button onClick={onClose} color="primary">
             Cancel
