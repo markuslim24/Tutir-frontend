@@ -32,7 +32,7 @@ export default function Profile() {
           </div>
         </div>
         <div>Statistics</div>
-        <VideoTable />
+        <VideoTable user={user} />
       </Container>
     </>
   );
