@@ -14,6 +14,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const imageLoader = ({ src }) => {
+  return src;
+}
+
 const VideoPreview = ({ video }) => {
   const classes = useStyles();
   return (
@@ -21,6 +25,7 @@ const VideoPreview = ({ video }) => {
       <div className={classes.previewContainer}>
         {/* <img src={video.thumbnailUrl} className={classes.img} /> */}
         <Image
+          loader={imageLoader}
           src={video.thumbnailUrl}
           width={640}
           height={360}

@@ -27,17 +27,19 @@ const useStyles = makeStyles({
   },
 });
 
-export default function VideoTable({ user }) {
+export default function VideoTable(props) {
   const [tableData, setTableData] = useState([]);
   const [openForm, setOpenForm] = useState(false);
 
   useEffect(() => {
-    getTableData();
-  }, []);
+    if (props.user) {
+      getTableData(props.user.id);
+    }
+  }, [props.user]);
 
-  async function getTableData() {
+  async function getTableData(userId) {
     try {
-      let res = await client.get(`/video?owner=${user.id}`);
+      let res = await client.get(`/video?owner=${userId}`);
       const videos = res.data.payload;
       setTableData([...videos]);
     } catch (err) {
