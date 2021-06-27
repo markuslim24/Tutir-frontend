@@ -4,8 +4,7 @@ import axios from "axios";
 import VideoPreview from "./VideoPreview";
 
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
-import { Typography, Grid } from "@material-ui/core";
-import { Repeat } from "@material-ui/icons";
+import { Typography, Paper } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -77,7 +76,7 @@ const Recommended = () => {
 
   return (
     <>
-      <div className={classes.root}>
+      <Paper className={classes.root}>
         <div className={classes.gridContainer}>
           <Typography className={classes.gridTitle}>
             Recommended for you
@@ -88,7 +87,7 @@ const Recommended = () => {
             </div>
           ))}
         </div>
-      </div>
+      </Paper>
     </>
   );
 };
