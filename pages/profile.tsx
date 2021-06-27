@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { getUser } from "../store/slice/auth";
 import { useSelector } from "react-redux";
 import { isLoggedIn } from "../store/slice/auth";
@@ -32,7 +32,7 @@ export default function Profile() {
           </div>
         </div>
         <div>Statistics</div>
-        <VideoTable />
+        <VideoTable user={user} />
       </Container>
     </>
   );

@@ -1,83 +1,95 @@
-import React from "react";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import React, { useState, useEffect } from "react";
+import { client } from "../util/util";
+import axios from "axios";
+import VideoPreview from "./VideoPreview";
 
-import { Typography, Grid, Paper } from "@material-ui/core";
+import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import { Typography, Paper } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      display: "flex",
-      flexWrap: "wrap",
-      justifyContent: "center",
+      width: "100%",
+      margin: "0 auto",
       backgroundColor: theme.palette.background.paper,
+      paddingTop: theme.spacing(2),
+      paddingBottom: theme.spacing(2),
     },
     gridContainer: {
-      width: "90%",
-      height: "100%",
-      justifySelf: "center",
-    },
-    gridHeader: {
-      margin: "10px 0px",
-    },
-    gridItem: {
+      display: "grid",
+      width: "95%",
+      margin: "0 auto",
+      gridTemplateColumns: "repeat(3,1fr)",
+      gridGap: "1em",
       [theme.breakpoints.down("xs")]: {
-        width: "100%",
+        gridTemplateColumns: "1fr",
+        gridTemplateRows: "[row1-start] 50px [row1-end]",
+        //gridAutoRows: "350px",
       },
-      [theme.breakpoints.up("sm")]: {
-        width: "50%",
+      [theme.breakpoints.only("sm")]: {
+        gridTemplateColumns: "repeat(2,1fr)",
+        gridTemplateRows: "[row1-start] 50px [row1-end]",
+        //gridAutoRows: "300px",
       },
-      [theme.breakpoints.up("lg")]: {
-        width: "25%",
+      [theme.breakpoints.only("md")]: {
+        gridTemplateColumns: "repeat(3,1fr)",
+        gridTemplateRows: "[row1-start] 50px [row1-end]",
+        //gridAutoRows: "250px",
+      },
+      [theme.breakpoints.only("lg")]: {
+        gridTemplateColumns: "repeat(4,1fr)",
+        gridTemplateRows: "[row1-start] 50px [row1-end]",
+        // gridAutoRows: "230px",
+      },
+      [theme.breakpoints.up("xl")]: {
+        gridTemplateColumns: "repeat(5,1fr)",
+        gridTemplateRows: "[row1-start] 50px [row1-end]",
+        //gridAutoRows: "270px",
       },
     },
-    img: {
-      maxWidth: "100%",
-      height: "auto",
-    },
+    gridTitle: { gridColumn: "1/-1", alignSelf: "center", fontSize: "1.5rem" },
   })
 );
 
-const exampleDatas = [
-  { thumbnail: "this", title: "Video1" },
-  { thumbnail: "better", title: "Video2" },
-  { thumbnail: "work", title: "Video3" },
-  { thumbnail: "well", title: "Video4" },
-  { thumbnail: "this", title: "Video5" },
-  { thumbnail: "better", title: "Video6" },
-  { thumbnail: "work", title: "Video7" },
-  { thumbnail: "well", title: "Video8" },
-  { thumbnail: "this", title: "Video9" },
-  { thumbnail: "better", title: "Video10" },
-  { thumbnail: "work", title: "Video11" },
-  { thumbnail: "well", title: "Video12" },
-  { thumbnail: "this", title: "Video13" },
-  { thumbnail: "better", title: "Video14" },
-  { thumbnail: "work", title: "Video15" },
-  { thumbnail: "well", title: "Video16" },
-];
-
-const filteredDatas = exampleDatas.slice(0, 8);
-
 const Recommended = () => {
   const classes = useStyles();
+  const [videos, setVideos] = useState([]);
+
+  useEffect(() => {
+    getVideos();
+  }, []);
+
+  async function getVideos() {
+    try {
+      let res = await client.get("/video");
+      setVideos([...res.data.payload]);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        let code = err.response?.data.code;
+        // if (code === "invalid_params") {
+        //   return handleAlerts("invalid params!");
+        // } else if (code === "auth_login_failed") {
+        //   return handleAlerts("Incorrect username/password!");
+        // }
+      }
+      throw err;
+    }
+  }
 
   return (
     <>
-      <div className={classes.root}>
-        <Grid container spacing={3} className={classes.gridContainer}>
-          <Grid item xs={12}>
-            <Typography variant="h5" className={classes.gridHeader}>
-              Recommended for you
-            </Typography>
-          </Grid>
-          {filteredDatas.map((filteredData) => (
-            <Grid item key={filteredData.title} className={classes.gridItem}>
-              <img src="/black.png" className={classes.img} />
-              <h3>{filteredData.title}</h3>
-            </Grid>
+      <Paper className={classes.root}>
+        <div className={classes.gridContainer}>
+          <Typography className={classes.gridTitle}>
+            Recommended for you
+          </Typography>
+          {videos.map((video) => (
+            <div key={video.id}>
+              <VideoPreview video={video} />
+            </div>
           ))}
-        </Grid>
-      </div>
+        </div>
+      </Paper>
     </>
   );
 };

@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { client } from "../util/util";
+import axios from "axios";
 import Navbar from "../components/Navbar";
+import VideoPreview from "../components/VideoPreview";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
-import { Typography, Grid, Paper } from "@material-ui/core";
+import { Typography, Grid, Paper, Container } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -9,76 +13,53 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexWrap: "wrap",
       justifyContent: "center",
+      marginTop: theme.spacing(4),
       backgroundColor: theme.palette.background.paper,
+      paddingTop: theme.spacing(2),
+      paddingBottom: theme.spacing(2),
     },
     gridContainer: {
-      width: "90%",
+      width: "95%",
       height: "100%",
       justifySelf: "center",
     },
-    gridHeader: {
-      margin: "10px 0px",
-    },
-    gridItem: {
-      [theme.breakpoints.down("xs")]: {
-        width: "100%",
-      },
-      [theme.breakpoints.up("sm")]: {
-        width: "50%",
-      },
-      [theme.breakpoints.up("lg")]: {
-        width: "25%",
-      },
-      [theme.breakpoints.up("xl")]: {
-        width: "20%",
-      },
-    },
-    img: {
-      maxWidth: "100%",
-      height: "auto",
+    gridTitle: {
+      fontSize: "1.5rem",
     },
   })
 );
 
-const exampleDatas = [
-  { thumbnail: "this", title: "Video1" },
-  { thumbnail: "better", title: "Video2" },
-  { thumbnail: "work", title: "Video3" },
-  { thumbnail: "well", title: "Video4" },
-  { thumbnail: "this", title: "Video5" },
-  { thumbnail: "better", title: "Video6" },
-  { thumbnail: "work", title: "Video7" },
-  { thumbnail: "well", title: "Video8" },
-  { thumbnail: "this", title: "Video9" },
-  { thumbnail: "better", title: "Video10" },
-  { thumbnail: "work", title: "Video11" },
-  { thumbnail: "well", title: "Video12" },
-  { thumbnail: "this", title: "Video13" },
-  { thumbnail: "better", title: "Video14" },
-  { thumbnail: "work", title: "Video15" },
-  { thumbnail: "well", title: "Video16" },
-];
-
 function Favourites() {
   const classes = useStyles();
+  const [videos, setVideos] = useState([]);
+
+  useEffect(() => {
+    getVideos();
+  }, []);
+
+  async function getVideos() {
+    try {
+      let res = await client.get("/video/favourites");
+      setVideos([...res.data.payload]);
+    } catch (err) {}
+  }
   return (
     <>
       <Navbar />
-      <div className={classes.root}>
-        <Grid container spacing={3} className={classes.gridContainer}>
-          <Grid item xs={12}>
-            <Typography variant="h5" className={classes.gridHeader}>
-              Favourites
-            </Typography>
-          </Grid>
-          {exampleDatas.map((exampleData) => (
-            <Grid item key={exampleData.title} className={classes.gridItem}>
-              <img src="/black.png" className={classes.img} />
-              <h3>{exampleData.title}</h3>
+      <Container maxWidth="xl">
+        <Paper className={classes.root}>
+          <Grid container spacing={3} className={classes.gridContainer}>
+            <Grid item xs={12} alignItems="center">
+              <Typography className={classes.gridTitle}>Favourites</Typography>
             </Grid>
-          ))}
-        </Grid>
-      </div>
+            {videos.map((video) => (
+              <Grid item key={video.id} xs={12} sm={6} md={4} lg={3}>
+                <VideoPreview video={video} />
+              </Grid>
+            ))}
+          </Grid>
+        </Paper>
+      </Container>
     </>
   );
 }
