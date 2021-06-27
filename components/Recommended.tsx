@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { client } from "../util/util";
 import axios from "axios";
+import VideoPreview from "./VideoPreview";
 
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import { Typography, Grid } from "@material-ui/core";
@@ -33,8 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     img: {
-      maxWidth: "100%",
-      height: "auto",
+      width: "100%",
     },
   })
 );
@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const Recommended = () => {
   const classes = useStyles();
   const [videos, setVideos] = useState([]);
+  const gridItemWidth = useRef();
 
   useEffect(() => {
     getVideos();
@@ -75,8 +76,8 @@ const Recommended = () => {
           </Grid>
           {videos.map((video) => (
             <Grid item key={video.id} className={classes.gridItem}>
-              <img src={video.thumbnailUrl} className={classes.img} />
-              <h3>{video.title}</h3>
+              {" "}
+              <VideoPreview video={video} />
             </Grid>
           ))}
         </Grid>

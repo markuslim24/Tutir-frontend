@@ -51,7 +51,7 @@ export default function VideoTable({ user }) {
 
   useEffect(() => {
     getTableData();
-  }, [tableData]);
+  }, []);
 
   async function getTableData() {
     try {

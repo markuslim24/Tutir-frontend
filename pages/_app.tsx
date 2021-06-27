@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     //initialize authentication state
     store.dispatch(initializeAuthState());
 
-    //initialize darkMode state
+    //initialize darkMode
     store.dispatch(initializeDarkModeState());
   }, []);
   return (
