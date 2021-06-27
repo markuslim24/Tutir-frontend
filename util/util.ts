@@ -15,7 +15,7 @@ const client = axios.create({
   withCredentials: true,
 });
 
-const protectedRoutes = [/user/, /\/video\/upload/];
+const protectedRoutes = [/user/, /\/video\/upload/, /\/video\/favourites/];
 
 const optionalRoutes = [/\/video\?id=/];
 
@@ -47,12 +47,12 @@ client.interceptors.request.use(async (req) => {
     const url = req.url || "";
     let isProtectedRoute = false;
     let isOptionalRoute = false;
-    protectedRoutes.forEach(regex => {
+    protectedRoutes.forEach((regex) => {
       if (url.match(regex)) {
         isProtectedRoute = true;
       }
     });
-    optionalRoutes.forEach(regex => {
+    optionalRoutes.forEach((regex) => {
       if (url.match(regex)) {
         isOptionalRoute = true;
       }

@@ -12,6 +12,8 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "100%",
       margin: "0 auto",
       backgroundColor: theme.palette.background.paper,
+      paddingTop: theme.spacing(2),
+      paddingBottom: theme.spacing(2),
     },
     gridContainer: {
       display: "grid",
@@ -82,7 +84,7 @@ const Recommended = () => {
             Recommended for you
           </Typography>
           {videos.map((video) => (
-            <div>
+            <div key={video.id}>
               <VideoPreview video={video} />
             </div>
           ))}
