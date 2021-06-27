@@ -10,12 +10,6 @@ import { Repeat } from "@material-ui/icons";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      display: "flex",
-      flexWrap: "wrap",
-      justifyContent: "center",
-      backgroundColor: theme.palette.background.paper,
-    },
-    root2: {
       width: "100%",
       margin: "0 auto",
       backgroundColor: theme.palette.background.paper,
@@ -52,30 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
         gridAutoRows: "270px",
       },
     },
-    gridTitle: { gridColumn: "1/-1" },
-    gridHeader: {
-      margin: "10px 0px",
-    },
-    gridItem: {
-      [theme.breakpoints.down("xs")]: {
-        width: "100%",
-      },
-      [theme.breakpoints.up("sm")]: {
-        maxWidth: "50%",
-        minHeight: "300px",
-        maxHeight: "200px",
-      },
-      [theme.breakpoints.up("md")]: {
-        maxWidth: "50%",
-        minHeight: "300px",
-        maxHeight: "200px",
-      },
-      [theme.breakpoints.up("lg")]: {
-        width: "26rem",
-        margin: "auto",
-      },
-    },
-    gridItem2: {},
+    gridTitle: { gridColumn: "1/-1", alignSelf: "center", fontSize: "1.5rem" },
   })
 );
 
@@ -106,26 +77,13 @@ const Recommended = () => {
 
   return (
     <>
-      {/* <div className={classes.root}>
-        <Grid container spacing={2} alignItems="stretch">
-          <Grid item xs={12} className={classes.gridItem2}>
-            <Typography variant="h5" className={classes.gridHeader}>
-              Recommended for you
-            </Typography>
-          </Grid>
-          {videos.map((video) => (
-            <Grid item key={video.id} lg={3} md={4} sm={6} xs={12}>
-              {" "}
-              <VideoPreview video={video} />
-            </Grid>
-          ))}
-        </Grid>
-      </div> */}
-      <div className={classes.root2}>
+      <div className={classes.root}>
         <div className={classes.gridContainer}>
-          <div className={classes.gridTitle}>Recommended for you</div>
+          <Typography className={classes.gridTitle}>
+            Recommended for you
+          </Typography>
           {videos.map((video) => (
-            <div className={classes.gridItem2}>
+            <div>
               <VideoPreview video={video} />
             </div>
           ))}
