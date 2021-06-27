@@ -45,16 +45,17 @@ const rows = [
   createData("Video 5", "15/6/2021", 16.0, 49, 3.9),
 ];
 
-export default function VideoTable() {
+export default function VideoTable({ user }) {
   const [tableData, setTableData] = useState([]);
+  const [openForm, setOpenForm] = useState(false);
 
   useEffect(() => {
     getTableData();
-  }, []);
+  }, [tableData]);
 
   async function getTableData() {
     try {
-      let res = await client.get("/video");
+      let res = await client.get(`/video?owner=${user.id}`);
       const videos = res.data.payload;
       setTableData([...videos]);
     } catch (err) {
@@ -69,8 +70,6 @@ export default function VideoTable() {
       throw err;
     }
   }
-
-  const [openForm, setOpenForm] = useState(false);
 
   const handleUploadOpen = () => {
     setOpenForm(true);
