@@ -27,24 +27,6 @@ const useStyles = makeStyles({
   },
 });
 
-function createData(
-  videoName: string,
-  date: string,
-  views: number,
-  comments: number,
-  likes: number
-) {
-  return { videoName, date, views, comments, likes };
-}
-
-const rows = [
-  createData("Video 1", "15/6/2021", 6.0, 24, 4.0),
-  createData("Video 2", "15/6/2021", 9.0, 37, 4.3),
-  createData("Video 3", "15/6/2021", 16.0, 24, 6.0),
-  createData("Video 4", "15/6/2021", 3.7, 67, 4.3),
-  createData("Video 5", "15/6/2021", 16.0, 49, 3.9),
-];
-
 export default function VideoTable({ user }) {
   const [tableData, setTableData] = useState([]);
   const [openForm, setOpenForm] = useState(false);
