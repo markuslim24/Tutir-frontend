@@ -22,27 +22,27 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.down("xs")]: {
         gridTemplateColumns: "1fr",
         gridTemplateRows: "[row1-start] 50px [row1-end]",
-        gridAutoRows: "350px",
+        //gridAutoRows: "350px",
       },
       [theme.breakpoints.only("sm")]: {
         gridTemplateColumns: "repeat(2,1fr)",
         gridTemplateRows: "[row1-start] 50px [row1-end]",
-        gridAutoRows: "300px",
+        //gridAutoRows: "300px",
       },
       [theme.breakpoints.only("md")]: {
         gridTemplateColumns: "repeat(3,1fr)",
         gridTemplateRows: "[row1-start] 50px [row1-end]",
-        gridAutoRows: "250px",
+        //gridAutoRows: "250px",
       },
       [theme.breakpoints.only("lg")]: {
         gridTemplateColumns: "repeat(4,1fr)",
         gridTemplateRows: "[row1-start] 50px [row1-end]",
-        gridAutoRows: "230px",
+        // gridAutoRows: "230px",
       },
       [theme.breakpoints.up("xl")]: {
         gridTemplateColumns: "repeat(5,1fr)",
         gridTemplateRows: "[row1-start] 50px [row1-end]",
-        gridAutoRows: "270px",
+        //gridAutoRows: "270px",
       },
     },
     gridTitle: { gridColumn: "1/-1", alignSelf: "center", fontSize: "1.5rem" },

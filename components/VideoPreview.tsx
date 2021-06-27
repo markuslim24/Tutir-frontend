@@ -2,6 +2,7 @@ import React from "react";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import Link from "next/link";
+import Image from "next/image";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,7 +19,13 @@ const VideoPreview = ({ video }) => {
   return (
     <Link href={`/[video]?id=${video.id}`} as={`/video?id=${video.id}`}>
       <div className={classes.previewContainer}>
-        <img src={video.thumbnailUrl} className={classes.img} />
+        {/* <img src={video.thumbnailUrl} className={classes.img} /> */}
+        <Image
+          src={video.thumbnailUrl}
+          width={640}
+          height={360}
+          layout="responsive"
+        />
         <Typography variant="h6">{video.title}</Typography>
       </div>
     </Link>

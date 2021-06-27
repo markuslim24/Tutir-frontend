@@ -59,23 +59,16 @@ const useStyles = makeStyles((theme: Theme) =>
 const Video = ({ video }) => {
   const classes = useStyles();
 
+  const handleFavouriteButtonClick = async () => {
+    try {
+      let res = await client.post(`/video/favourites`, { video: video.id });
+    } catch (err) {}
+  };
+
   return (
     <>
       <Navbar />
       <Container className={classes.root}>
-        {/* <Grid container>
-          <Grid item className={classes.gridItem}>
-            <div className={classes.videoContainer}>
-              <ReactPlayer url={video.url} controls={true} width="100%" />
-              <div>Video tab</div>
-            </div>
-          </Grid>
-          <Grid item className={classes.gridComments}>
-            <Typography>Comments Panel</Typography>
-            <div className={classes.test}></div>
-          </Grid>
-        </Grid> */}
-
         <div className={classes.gridItem}>
           <ReactPlayer
             url={video.url}
@@ -92,7 +85,7 @@ const Video = ({ video }) => {
               title="Add to Favourites"
               className={classes.favouriteIcon}
             >
-              <IconButton>
+              <IconButton onClick={handleFavouriteButtonClick}>
                 <StarIcon />
               </IconButton>
             </Tooltip>
