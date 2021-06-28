@@ -4,7 +4,7 @@ import axios from "axios";
 import VideoPreview from "./VideoPreview";
 
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
-import { Typography, Paper } from "@material-ui/core";
+import { Typography, Paper, Chip } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const Recommended = () => {
   const classes = useStyles();
   const [videos, setVideos] = useState([]);
+  const [topTags, setTopTags] = useState([]);
 
   useEffect(() => {
     getVideos();
@@ -62,7 +63,9 @@ const Recommended = () => {
   async function getVideos() {
     try {
       let res = await client.get("/video");
+      let res2 = await client.get("/video/tags");
       setVideos([...res.data.payload]);
+      setTopTags([...res2.data.payload].splice(0, 8));
     } catch (err) {
       if (axios.isAxiosError(err)) {
         let code = err.response?.data.code;
@@ -83,6 +86,18 @@ const Recommended = () => {
           <Typography className={classes.gridTitle}>
             Recommended for you
           </Typography>
+          <div className={classes.gridTitle}>
+            {topTags.map((tag) => (
+              <Chip
+                style={{
+                  marginRight: "0.5rem",
+                }}
+                color="primary"
+                key={tag}
+                label={tag}
+              />
+            ))}
+          </div>
           {videos.map((video) => (
             <div key={video.id}>
               <VideoPreview video={video} />
