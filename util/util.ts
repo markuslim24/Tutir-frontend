@@ -15,7 +15,12 @@ const client = axios.create({
   withCredentials: true,
 });
 
-const protectedRoutes = [/user/, /\/video\/upload/, /\/video\/favourites/];
+const protectedRoutes = [
+  /user/,
+  /\/video\/upload/,
+  /\/video\/favourites/,
+  /\/video\/history/,
+];
 
 const optionalRoutes = [/\/video\?id=/];
 
