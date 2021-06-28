@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import ReactPlayer from "react-player";
-import { useRouter } from "next/router";
+
 import Navbar from "../components/Navbar";
+import Tag from "../components/Tag";
 import { client } from "../util/util";
 import axios from "axios";
 import {
   Container,
   Grid,
   Typography,
-  AppBar,
   Toolbar,
   Tooltip,
   IconButton,
@@ -16,12 +16,10 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Divider,
 } from "@material-ui/core";
 import StarIcon from "@material-ui/icons/Star";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
-import { GetApp } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -112,14 +110,7 @@ const Video = ({ video }) => {
           </Toolbar>
           <div className={classes.tagsContainer}>
             {video.tags.map((tag) => (
-              <Chip
-                style={{
-                  marginRight: "0.5rem",
-                }}
-                color="primary"
-                key={tag}
-                label={tag}
-              />
+              <Tag key={tag} tag={tag} />
             ))}
           </div>
         </div>

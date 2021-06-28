@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { client } from "../util/util";
 import axios from "axios";
 import VideoPreview from "./VideoPreview";
+import Tag from "./Tag";
 
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import { Typography, Paper, Chip } from "@material-ui/core";
@@ -65,7 +66,7 @@ const Recommended = () => {
       let res = await client.get("/video");
       let res2 = await client.get("/video/tags");
       setVideos([...res.data.payload]);
-      setTopTags([...res2.data.payload].splice(0, 8));
+      setTopTags([...res2.data.payload].splice(0, 12));
     } catch (err) {
       if (axios.isAxiosError(err)) {
         let code = err.response?.data.code;
@@ -88,14 +89,7 @@ const Recommended = () => {
           </Typography>
           <div className={classes.gridTitle}>
             {topTags.map((tag) => (
-              <Chip
-                style={{
-                  marginRight: "0.5rem",
-                }}
-                color="primary"
-                key={tag}
-                label={tag}
-              />
+              <Tag key={tag} tag={tag} />
             ))}
           </div>
           {videos.map((video) => (
