@@ -33,13 +33,13 @@ export default function VideoTable(props) {
 
   useEffect(() => {
     if (props.user) {
-      getTableData(props.user.id);
+      getTableData();
     }
   }, [props.user]);
 
-  async function getTableData(userId) {
+  async function getTableData() {
     try {
-      let res = await client.get(`/video?owner=${userId}`);
+      let res = await client.get(`/video?owner=${props.user.id}`);
       const videos = res.data.payload;
       setTableData([...videos]);
     } catch (err) {
@@ -81,6 +81,7 @@ export default function VideoTable(props) {
           <UploadVideoDialog
             openForm={openForm}
             handleUploadClose={handleUploadClose}
+            getTableData={getTableData}
           />
         </Toolbar>
         <Table

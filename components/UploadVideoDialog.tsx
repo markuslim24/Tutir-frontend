@@ -21,7 +21,11 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 import Alerts from "../components/Alerts";
 
-const UploadVideoDialog = ({ openForm, handleUploadClose }: any) => {
+const UploadVideoDialog = ({
+  openForm,
+  handleUploadClose,
+  getTableData,
+}: any) => {
   const [videoFile, setVideoFile] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -111,6 +115,7 @@ const UploadVideoDialog = ({ openForm, handleUploadClose }: any) => {
     try {
       let res = await client.post("/video/upload", formData);
       onClose();
+      getTableData();
     } catch (err) {
       if (axios.isAxiosError(err)) {
         let code = err.response?.data.code;

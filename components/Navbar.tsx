@@ -73,6 +73,9 @@ export default function Navbar() {
   const handleFavouritesButton = () => {
     router.push("/favourites");
   };
+  const handleHistoryButton = () => {
+    router.push("/history");
+  };
 
   const handleProfileButton = () => {
     handleMenuClose();
@@ -98,7 +101,7 @@ export default function Navbar() {
         <AccountCircleIcon />
         Profile
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem onClick={handleHistoryButton}>
         <HistoryIcon />
         History
       </MenuItem>

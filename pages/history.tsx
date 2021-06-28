@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-function Favourites() {
+function History() {
   const classes = useStyles();
   const [videos, setVideos] = useState([]);
 
@@ -38,7 +38,7 @@ function Favourites() {
 
   async function getVideos() {
     try {
-      let res = await client.get("/video/favourites");
+      let res = await client.get("/video/history");
       setVideos([...res.data.payload]);
     } catch (err) {}
   }
@@ -49,7 +49,7 @@ function Favourites() {
         <Paper className={classes.root}>
           <Grid container spacing={3} className={classes.gridContainer}>
             <Grid item xs={12}>
-              <Typography className={classes.gridTitle}>Favourites</Typography>
+              <Typography className={classes.gridTitle}>History</Typography>
             </Grid>
             {videos.map((video) => (
               <Grid item key={video.id} xs={12} sm={6} md={4} lg={3}>
@@ -63,4 +63,4 @@ function Favourites() {
   );
 }
 
-export default Favourites;
+export default History;
