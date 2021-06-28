@@ -12,46 +12,66 @@ import {
   Toolbar,
   Tooltip,
   IconButton,
+  Chip,
+  Card,
+  CardHeader,
+  CardContent,
+  Divider,
 } from "@material-ui/core";
 import StarIcon from "@material-ui/icons/Star";
+import GetAppIcon from "@material-ui/icons/GetApp";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import { GetApp } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: "flex",
       flexWrap: "wrap",
+      flexDirection: "row",
       marginTop: theme.spacing(6),
     },
 
-    gridItem: {
-      [theme.breakpoints.down("sm")]: {
-        width: "100%",
-      },
-      [theme.breakpoints.up("md")]: {
-        width: "56rem",
-        height: "35rem",
-      },
+    flexItem: {
+      width: "56rem",
+      height: "auto",
+      flexGrow: 1,
+      padding: "10px",
+    },
+    videoToolbar: {
+      display: "flex",
+      flexWrap: "wrap",
+      padding: "0px",
+      width: "100%",
     },
     videoTitle: {
       flexGrow: 1,
     },
-    favouriteIcon: {
-      justifySelf: "right",
-    },
+    tagsContainer: { height: "75px" },
+    favouriteIcon: {},
     videoContainer: {
       width: "90%",
       marginTop: theme.spacing(2),
       backgroundColor: theme.palette.background.paper,
     },
-    gridComments: {
-      [theme.breakpoints.down("sm")]: {
-        width: "100%",
-      },
-      [theme.breakpoints.up("md")]: {
-        minWidth: "80px",
-      },
-      backgroundColor: "grey",
+    descriptionAndNotes: {
+      marginTop: "10px",
+      width: "16rem",
+      flexGrow: 1,
+      display: "flex",
+      flexDirection: "column",
+    },
+    descriptionPanel: {
+      width: "100%",
+      flexGrow: 1,
+
+      minHeight: "7rem",
+      maxHeight: "15rem",
+    },
+    notesPanel: {
+      marginTop: "10px",
+      width: "100%",
+      flexGrow: 1,
     },
   })
 );
@@ -69,15 +89,15 @@ const Video = ({ video }) => {
     <>
       <Navbar />
       <Container className={classes.root}>
-        <div className={classes.gridItem}>
+        <div className={classes.flexItem}>
           <ReactPlayer
             url={video.url}
             controls={true}
             width="100%"
-            height="90%"
+            height="80%"
           />
 
-          <Toolbar>
+          <Toolbar className={classes.videoToolbar}>
             <Typography variant="h4" className={classes.videoTitle}>
               {video.title}
             </Typography>
@@ -90,8 +110,49 @@ const Video = ({ video }) => {
               </IconButton>
             </Tooltip>
           </Toolbar>
+          <div className={classes.tagsContainer}>
+            {video.tags.map((tag) => (
+              <Chip
+                style={{
+                  marginRight: "0.5rem",
+                }}
+                color="primary"
+                key={tag}
+                label={tag}
+              />
+            ))}
+          </div>
         </div>
-        {/*<div className={classes.gridComments}>Comments Panel</div>*/}
+        <div className={classes.descriptionAndNotes}>
+          <Card className={classes.descriptionPanel}>
+            <CardContent>
+              <Typography variant="h5">Description</Typography>
+              <Typography variant="body2">
+                <br />
+                {video.description}
+              </Typography>
+            </CardContent>
+          </Card>
+          <Card className={classes.notesPanel}>
+            <CardContent>
+              <Typography variant="h5">Notes</Typography>
+              <br />
+            </CardContent>
+            {video.notes.map((note, index) => (
+              <CardHeader
+                key={note}
+                title={`Note ${index + 1}`}
+                action={
+                  <a href={note} download>
+                    <IconButton aria-label="download">
+                      <GetAppIcon />
+                    </IconButton>
+                  </a>
+                }
+              ></CardHeader>
+            ))}
+          </Card>
+        </div>
       </Container>
     </>
   );
