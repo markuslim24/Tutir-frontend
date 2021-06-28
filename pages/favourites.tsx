@@ -49,7 +49,7 @@ function Favourites() {
       <Container maxWidth="xl">
         <Paper className={classes.root}>
           <Grid container spacing={3} className={classes.gridContainer}>
-            <Grid item xs={12} alignItems="center">
+            <Grid item xs={12}>
               <Typography className={classes.gridTitle}>Favourites</Typography>
             </Grid>
             {videos.map((video) => (
