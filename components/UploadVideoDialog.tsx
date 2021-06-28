@@ -12,7 +12,13 @@ import {
   DialogTitle,
   TextField,
   Typography,
+  Chip,
+  Input,
+  InputAdornment,
+  IconButton,
 } from "@material-ui/core";
+
+import AddIcon from "@material-ui/icons/Add";
 import Alerts from "../components/Alerts";
 
 const UploadVideoDialog = ({ openForm, handleUploadClose }: any) => {
@@ -21,6 +27,8 @@ const UploadVideoDialog = ({ openForm, handleUploadClose }: any) => {
   const [description, setDescription] = useState("");
   const [notes, setNotes] = useState([]);
   const [thumbnail, setThumbnail] = useState(null);
+  const [tags, setTags] = useState([]);
+  const [tagField, setTagField] = useState("");
 
   const [isAlert, setIsAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -37,6 +45,7 @@ const UploadVideoDialog = ({ openForm, handleUploadClose }: any) => {
     setDescription("");
     setNotes([]);
     setThumbnail(null);
+    setTags([]);
   }
 
   function onFileChange(event: any, fileHandler: Function): void {
@@ -54,6 +63,38 @@ const UploadVideoDialog = ({ openForm, handleUploadClose }: any) => {
     }
   }
 
+  const handleTagFieldEnter = () => {
+    if (tagField !== "") {
+      let tmp = tags;
+      let tagToAdd = tagField.toLowerCase();
+      let isDuplicate = false;
+      tmp.forEach((tag) => {
+        if (tag == tagToAdd) {
+          isDuplicate = true;
+        }
+      });
+      if (!isDuplicate) {
+        tmp.push(tagToAdd);
+        setTags(tmp);
+        setTagField("");
+      }
+    }
+  };
+
+  const handleTagFieldKeyPress = (e) => {
+    if (e.keyCode == 13) {
+      handleTagFieldEnter();
+    }
+  };
+
+  const handleTagChipDelete = (index: number) => {
+    let tmp = tags;
+    if (index > -1) {
+      tmp.splice(index, 1);
+    }
+    setTags([...tmp]);
+  };
+
   async function handleSubmit() {
     const formData = new FormData();
     formData.append("title", title);
@@ -63,7 +104,9 @@ const UploadVideoDialog = ({ openForm, handleUploadClose }: any) => {
     notes.forEach((note) => {
       formData.append("notes", note);
     });
-    formData.append("tags", "test2");
+    tags.forEach((tag) => {
+      formData.append("tags", tag);
+    });
 
     try {
       let res = await client.post("/video/upload", formData);
@@ -101,7 +144,9 @@ const UploadVideoDialog = ({ openForm, handleUploadClose }: any) => {
               accept="video/mp4"
             />
           </Button>
-          {videoFile ? videoFile.name : ""}
+          <Typography display="inline" style={{ marginLeft: "1rem" }}>
+            {videoFile ? videoFile.name : ""}
+          </Typography>
         </DialogContent>
         <DialogContent>
           <Button variant="contained" component="label">
@@ -113,7 +158,9 @@ const UploadVideoDialog = ({ openForm, handleUploadClose }: any) => {
               accept="image/jpeg, image/png"
             />
           </Button>
-          {thumbnail ? thumbnail.name : ""}
+          <Typography display="inline" style={{ marginLeft: "1rem" }}>
+            {thumbnail ? thumbnail.name : ""}
+          </Typography>
         </DialogContent>
         <DialogContent>
           <TextField
@@ -149,7 +196,44 @@ const UploadVideoDialog = ({ openForm, handleUploadClose }: any) => {
             />
           </Button>
           {notes.length > 0
-            ? notes.map((note) => <h3 key={note.name}>{note.name}</h3>)
+            ? notes.map((note) => (
+                <Typography key={note.name}>{note.name}</Typography>
+              ))
+            : ""}
+        </DialogContent>
+        <DialogContent>
+          <Input
+            required
+            margin="dense"
+            id="tags"
+            placeholder="Add a tag..."
+            type="text"
+            value={tagField}
+            onKeyDown={handleTagFieldKeyPress}
+            onChange={(e) => setTagField(e.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <Button onClick={handleTagFieldEnter}>
+                  <AddIcon />
+                </Button>
+              </InputAdornment>
+            }
+          />
+        </DialogContent>
+        <DialogContent>
+          {" "}
+          {tags.length > 0
+            ? tags.map((tag, index) => (
+                <Chip
+                  style={{
+                    marginRight: "0.5rem",
+                  }}
+                  color="primary"
+                  key={index}
+                  label={tag}
+                  onDelete={() => handleTagChipDelete(index)}
+                />
+              ))
             : ""}
         </DialogContent>
         <Alerts
