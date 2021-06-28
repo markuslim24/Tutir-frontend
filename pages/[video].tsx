@@ -1,6 +1,6 @@
 import React from "react";
 import ReactPlayer from "react-player";
-
+import { useState } from 'react';
 import Navbar from "../components/Navbar";
 import Tag from "../components/Tag";
 import { client } from "../util/util";
@@ -20,6 +20,8 @@ import {
 import StarIcon from "@material-ui/icons/Star";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -74,15 +76,31 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Video = ({ video }) => {
+const Video = () => {
   const classes = useStyles();
-
+  const [video, setVideo] = useState({ 
+    id: '', 
+    title: '', 
+    description: '', 
+    url: '', 
+    thumbnailUrl: '', 
+    tags: [], 
+    notes: []
+  });
+  const router = useRouter();
   const handleFavouriteButtonClick = async () => {
     try {
       let res = await client.post(`/video/favourites`, { video: video.id });
     } catch (err) {}
   };
-
+  useEffect(() => {
+    const { id } = router.query;
+    if (id) {
+      client.get(`/video?id=${id}`).then(res => {
+        setVideo(res.data.payload);
+      });
+    }
+  }, [router]);
   return (
     <>
       <Navbar />
@@ -149,17 +167,17 @@ const Video = ({ video }) => {
   );
 };
 
-export const getServerSideProps = async (context) => {
-  try {
-    const { id } = context.query;
-    let res = await client.get(`/video?id=${id}`);
-    const video = res.data.payload;
-    return {
-      props: {
-        video,
-      },
-    };
-  } catch (err) {}
-};
+// export const getServerSideProps = async (context) => {
+//   try {
+//     const { id } = context.query;
+//     let res = await client.get(`/video?id=${id}`);
+//     const video = res.data.payload;
+//     return {
+//       props: {
+//         video,
+//       },
+//     };
+//   } catch (err) {}
+// };
 
 export default Video;
