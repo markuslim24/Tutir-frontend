@@ -19,8 +19,9 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import HistoryIcon from "@material-ui/icons/History";
 import SearchBar from "./SearchBar";
+import RestorePageIcon from "@material-ui/icons/RestorePage";
+import { Tooltip } from "@material-ui/core";
 import useStyles from "../styles/components/NavbarStyle";
 
 //Navbar Component
@@ -101,10 +102,7 @@ export default function Navbar() {
         <AccountCircleIcon />
         Profile
       </MenuItem>
-      <MenuItem onClick={handleHistoryButton}>
-        <HistoryIcon />
-        History
-      </MenuItem>
+
       <MenuItem onClick={handleLogout}>
         <ExitToAppIcon />
         Logout
@@ -123,6 +121,10 @@ export default function Navbar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem onClick={handleHistoryButton}>
+        <RestorePageIcon className={classes.mobileMenuIcons} />
+        <p>History</p>
+      </MenuItem>
       <MenuItem onClick={handleFavouritesButton}>
         <StarIcon className={classes.mobileMenuIcons} />
         <p>Favourites</p>
@@ -177,11 +179,22 @@ export default function Navbar() {
             {isAuthenticated ? (
               <>
                 <IconButton
+                  aria-label="show history"
+                  color="primary"
+                  onClick={handleHistoryButton}
+                >
+                  <Tooltip title="History">
+                    <RestorePageIcon />
+                  </Tooltip>
+                </IconButton>
+                <IconButton
                   aria-label="show favourite videos"
                   color="primary"
                   onClick={handleFavouritesButton}
                 >
-                  <StarIcon />
+                  <Tooltip title="Favourites">
+                    <StarIcon />
+                  </Tooltip>
                 </IconButton>
                 <IconButton
                   aria-label="account of current user"
@@ -190,7 +203,9 @@ export default function Navbar() {
                   color="inherit"
                   onClick={handleProfileMenuOpen}
                 >
-                  <Avatar src="Avatar.png" className={classes.Avatar} />
+                  <Tooltip title="Profile">
+                    <Avatar src="Avatar.png" className={classes.Avatar} />
+                  </Tooltip>
                 </IconButton>
                 <IconButton
                   edge="end"
@@ -199,7 +214,9 @@ export default function Navbar() {
                   aria-label="show settings"
                   onClick={handleSettingsButton}
                 >
-                  <SettingsIcon />
+                  <Tooltip title="Settings">
+                    <SettingsIcon />
+                  </Tooltip>
                 </IconButton>
               </>
             ) : (
