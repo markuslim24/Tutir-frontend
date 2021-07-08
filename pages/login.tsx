@@ -113,6 +113,7 @@ export default function Login() {
               margin="normal"
               required
               fullWidth
+              type="email"
               label="Email Address"
               value={email}
               autoComplete="email"

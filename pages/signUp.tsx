@@ -66,28 +66,30 @@ export default function SignUp() {
     setIsError(error);
     setAlertMessage(message);
   };
-  const attemptSignUp = async () => {
+  const attemptSignUp = async (e) => {
+    e.preventDefault();
     if (password !== confirmPassword) {
       return handleAlerts(true, "Passwords do not match");
-    }
-    try {
-      setIsSignUpDisabled(true);
-      let res = await client.post("/auth/signUp", {
-        name: name,
-        email: email,
-        password: password,
-      });
-      handleAlerts(false, "Sign up is successful. You may now login.");
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        let errCode = err.response?.data.code;
-        if (errCode === "user_already_exists") {
-          return handleAlerts(true, "Email already in use");
+    } else {
+      try {
+        setIsSignUpDisabled(true);
+        let res = await client.post("/auth/signUp", {
+          name: name,
+          email: email,
+          password: password,
+        });
+        handleAlerts(false, "Sign up is successful. You may now login.");
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          let errCode = err.response?.data.code;
+          if (errCode === "user_already_exists") {
+            return handleAlerts(true, "Email already in use");
+          }
         }
+        throw err;
+      } finally {
+        setIsSignUpDisabled(false);
       }
-      throw err;
-    } finally {
-      setIsSignUpDisabled(false);
     }
   };
   return (
@@ -100,7 +102,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <FormControl className={classes.form}>
+        <form className={classes.form} onSubmit={attemptSignUp}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -120,6 +122,7 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
+                type="email"
                 id="email"
                 label="Email Address"
                 name="email"
@@ -172,7 +175,6 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={attemptSignUp}
             disabled={isSignUpDisabled}
           >
             Sign Up
@@ -188,7 +190,7 @@ export default function SignUp() {
               </Typography>
             </Grid>
           </Grid>
-        </FormControl>
+        </form>
       </div>
       <Box mt={5}>
         <Copyright />
