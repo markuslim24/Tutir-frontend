@@ -72,7 +72,8 @@ export default function Login() {
   };
 
   //send email/password to backend for authentication
-  const attemptLogin = async () => {
+  const attemptLogin = async (e) => {
+    e.preventDefault();
     try {
       setIsLoginDisabled(true);
       let res = await client.post("/auth/login", {
@@ -107,7 +108,7 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-          <FormControl className={classes.form}>
+          <form className={classes.form} onSubmit={attemptLogin}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -154,7 +155,6 @@ export default function Login() {
               color="primary"
               disabled={isLoginDisabled}
               className={classes.submit}
-              onClick={attemptLogin}
             >
               Sign In
             </Button>
@@ -180,7 +180,7 @@ export default function Login() {
                 </Typography>
               </Grid>
             </Grid>
-          </FormControl>
+          </form>
         </div>
         <Box mt={8}>
           <Copyright />
