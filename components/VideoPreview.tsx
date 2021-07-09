@@ -35,6 +35,7 @@ const VideoPreview = ({ video }) => {
           width={640}
           height={360}
           layout="responsive"
+          priority={true}
         />
         <Typography variant="h6">{video.title}</Typography>
       </Card>
