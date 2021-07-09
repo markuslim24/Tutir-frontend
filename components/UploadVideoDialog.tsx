@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import Dropzone from "react-dropzone";
 import axios from "axios";
@@ -15,7 +15,6 @@ import {
   Chip,
   Input,
   InputAdornment,
-  IconButton,
 } from "@material-ui/core";
 
 import AddIcon from "@material-ui/icons/Add";

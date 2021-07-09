@@ -7,9 +7,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Typography,
 } from "@material-ui/core";
 
 const ChangeProfilePictureDialog = ({
@@ -40,17 +37,11 @@ const ChangeProfilePictureDialog = ({
         onClose();
       } catch (err) {
         if (axios.isAxiosError(err)) {
-          let code = err.response?.data.code;
-          // if (code === "invalid_params") {
-          //   return handleAlerts("invalid params!");
-          // } else if (code === "auth_login_failed") {
-          //   return handleAlerts("Incorrect username/password!");
-          // }
         }
         throw err;
-      } finally {
       }
     } else {
+      console.log("No image uploaded so no change");
       onClose();
     }
   }
@@ -86,7 +77,7 @@ const ChangeProfilePictureDialog = ({
             Cancel
           </Button>
           <Button onClick={handleSubmit} color="primary">
-            Submit
+            Upload
           </Button>
         </DialogActions>
       </Dialog>

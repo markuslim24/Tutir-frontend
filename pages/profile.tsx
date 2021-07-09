@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { getUser } from "../store/slice/auth";
 import { useSelector } from "react-redux";
 import { isLoggedIn } from "../store/slice/auth";
