@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-
-import Dropzone from "react-dropzone";
 import axios from "axios";
 import { client } from "../util/util";
 import {
