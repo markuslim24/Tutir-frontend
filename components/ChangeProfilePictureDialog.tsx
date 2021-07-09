@@ -28,25 +28,30 @@ const ChangeProfilePictureDialog = ({
   function onClose(): void {
     setOpenProfilePicture(false);
     setImgFile(null);
+    setImgPreview("");
   }
   async function handleSubmit() {
-    const formData = new FormData();
-    formData.append("profileImage", imgFile);
-    try {
-      let res = await client.post(`/user/profileImage`, formData);
+    if (imgFile) {
+      const formData = new FormData();
+      formData.append("profileImage", imgFile);
+      try {
+        let res = await client.post(`/user/profileImage`, formData);
 
-      onClose();
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        let code = err.response?.data.code;
-        // if (code === "invalid_params") {
-        //   return handleAlerts("invalid params!");
-        // } else if (code === "auth_login_failed") {
-        //   return handleAlerts("Incorrect username/password!");
-        // }
+        onClose();
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          let code = err.response?.data.code;
+          // if (code === "invalid_params") {
+          //   return handleAlerts("invalid params!");
+          // } else if (code === "auth_login_failed") {
+          //   return handleAlerts("Incorrect username/password!");
+          // }
+        }
+        throw err;
+      } finally {
       }
-      throw err;
-    } finally {
+    } else {
+      onClose();
     }
   }
 
@@ -63,15 +68,15 @@ const ChangeProfilePictureDialog = ({
               accept="image/jpeg, image/png"
             />
           </Button>
-          <img
+          <Avatar
             src={imgPreview}
-            sizes="100px"
             style={{
-              marginLeft: "1rem",
-              display: "inline",
+              display: imgPreview ? "block" : "none",
+              position: "relative",
+              top: "5px",
+              margin: "auto",
               width: "100px",
               height: "100px",
-              borderRadius: "50%",
               backgroundColor: "transparent",
             }}
           />

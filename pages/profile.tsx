@@ -17,7 +17,6 @@ export default function Profile() {
   const classes = useStyles();
   const isAuth = useSelector(isLoggedIn);
   const user = useSelector(getUser);
-  const [profileImageUrl, setProfileImageUrl] = useState(user.profileImageUrl);
   const [openProfilePicture, setOpenProfilePicture] = useState(false);
   console.log(user);
 
@@ -34,7 +33,10 @@ export default function Profile() {
             className={classes.avatarContainer}
             onClick={() => setOpenProfilePicture(true)}
           >
-            <Avatar src={profileImageUrl} className={classes.avatar} />
+            <Avatar
+              src={user ? user.profileImageUrl : ""}
+              className={classes.avatar}
+            />
             <div className={classes.changeProfilePicture}>
               <FlipCameraIosIcon
                 style={{

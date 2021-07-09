@@ -2,6 +2,7 @@
 import React, { useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { getUser } from "../store/slice/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { isLoggedIn, logOut } from "../store/slice/auth";
 import { useRouter } from "next/router";
@@ -27,6 +28,7 @@ import useStyles from "../styles/components/NavbarStyle";
 //Navbar Component
 export default function Navbar() {
   const classes = useStyles();
+  const user = useSelector(getUser);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -130,7 +132,10 @@ export default function Navbar() {
         <p>Favourites</p>
       </MenuItem>
       <MenuItem onClick={handleProfileButton}>
-        <Avatar src="Avatar.png" className={classes.Avatar} />
+        <Avatar
+          src={user ? user.profileImageUrl : ""}
+          className={classes.Avatar}
+        />
         <p>Profile</p>
       </MenuItem>
       <MenuItem onClick={handleSettingsButton}>
@@ -204,7 +209,10 @@ export default function Navbar() {
                   onClick={handleProfileMenuOpen}
                 >
                   <Tooltip title="Profile">
-                    <Avatar src="Avatar.png" className={classes.Avatar} />
+                    <Avatar
+                      src={user ? user.profileImageUrl : ""}
+                      className={classes.Avatar}
+                    />
                   </Tooltip>
                 </IconButton>
                 <IconButton
