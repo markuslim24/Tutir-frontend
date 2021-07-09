@@ -32,6 +32,7 @@ const UploadVideoDialog = ({
   const [thumbnail, setThumbnail] = useState(null);
   const [tags, setTags] = useState([]);
   const [tagField, setTagField] = useState("");
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
 
   const [isAlert, setIsAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -99,6 +100,7 @@ const UploadVideoDialog = ({
   };
 
   async function handleSubmit() {
+    setIsSubmitDisabled(true);
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
@@ -126,6 +128,7 @@ const UploadVideoDialog = ({
       }
       throw err;
     } finally {
+      setIsSubmitDisabled(false);
     }
   }
 
@@ -250,7 +253,11 @@ const UploadVideoDialog = ({
           <Button onClick={onClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} color="primary">
+          <Button
+            disabled={isSubmitDisabled}
+            onClick={handleSubmit}
+            color="primary"
+          >
             Submit
           </Button>
         </DialogActions>
