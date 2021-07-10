@@ -1,8 +1,8 @@
 //imports
 import axios from "axios";
 import { useRouter } from "next/dist/client/router";
-import { useCallback, useState } from "react";
-import { useDispatch, useStore } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { login } from "../store/slice/auth";
 import { client } from "../util/util";
 import Link from "next/link";

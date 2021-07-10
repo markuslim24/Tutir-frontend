@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { store } from "../store/store";
+import { useDispatch } from "react-redux";
 import { client } from "../util/util";
+import { updateUser } from "../store/slice/auth";
 import {
   Avatar,
   Button,
@@ -15,6 +18,7 @@ const ChangeProfilePictureDialog = ({
 }) => {
   const [imgFile, setImgFile] = useState(null);
   const [imgPreview, setImgPreview] = useState("");
+  const dispatch = useDispatch();
 
   function onFileChange(event: any, fileHandler: Function): void {
     // Update the state
@@ -33,7 +37,7 @@ const ChangeProfilePictureDialog = ({
       formData.append("profileImage", imgFile);
       try {
         let res = await client.post(`/user/profileImage`, formData);
-
+        dispatch(updateUser(res.data.payload));
         onClose();
       } catch (err) {
         if (axios.isAxiosError(err)) {
