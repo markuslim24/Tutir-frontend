@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { client } from "../util/util";
@@ -17,7 +17,12 @@ const ChangeProfilePictureDialog = ({
   openProfilePicture,
 }) => {
   const [imgFile, setImgFile] = useState(null);
-  const [imgPreview, setImgPreview] = useState(user.profileImageUrl);
+  const [imgPreview, setImgPreview] = useState("");
+
+  useEffect(() => {
+    setImgPreview(user ? user.profileImageUrl : "");
+  }, [user]);
+
   const dispatch = useDispatch();
 
   function onFileChange(event: any, fileHandler: Function): void {
@@ -28,8 +33,6 @@ const ChangeProfilePictureDialog = ({
 
   function onClose(): void {
     setOpenProfilePicture(false);
-    setImgFile(null);
-    setImgPreview("");
   }
   async function handleSubmit() {
     if (imgFile) {

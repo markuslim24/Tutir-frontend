@@ -13,13 +13,13 @@ import {
 } from "@material-ui/core";
 
 const EditProfileDialog = ({ openEditProfile, setOpenEditProfile, user }) => {
-  const [name, setName] = useState(user.name);
+  const [name, setName] = useState("");
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setName(user.name);
-  }, [user.name]);
+    setName(user ? user.name : "");
+  }, [user]);
 
   function onClose(): void {
     setOpenEditProfile(false);
