@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-
-import Dropzone from "react-dropzone";
+import React, { useState } from "react";
 import axios from "axios";
 import { client } from "../util/util";
 import {
@@ -15,7 +13,6 @@ import {
   Chip,
   Input,
   InputAdornment,
-  IconButton,
 } from "@material-ui/core";
 
 import AddIcon from "@material-ui/icons/Add";
@@ -33,6 +30,7 @@ const UploadVideoDialog = ({
   const [thumbnail, setThumbnail] = useState(null);
   const [tags, setTags] = useState([]);
   const [tagField, setTagField] = useState("");
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
 
   const [isAlert, setIsAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -100,6 +98,7 @@ const UploadVideoDialog = ({
   };
 
   async function handleSubmit() {
+    setIsSubmitDisabled(true);
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
@@ -127,6 +126,7 @@ const UploadVideoDialog = ({
       }
       throw err;
     } finally {
+      setIsSubmitDisabled(false);
     }
   }
 
@@ -251,7 +251,11 @@ const UploadVideoDialog = ({
           <Button onClick={onClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} color="primary">
+          <Button
+            disabled={isSubmitDisabled}
+            onClick={handleSubmit}
+            color="primary"
+          >
             Submit
           </Button>
         </DialogActions>

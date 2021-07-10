@@ -76,7 +76,7 @@ export function login(payload: any) {
 
 export function updateUser(payload: any) {
   storeUser(payload);
-  setUser(payload);
+  return setUser(payload);
 }
 
 export function logOut() {

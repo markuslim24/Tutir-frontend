@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     border: "none",
     padding: "0",
     fontSize: "1rem",
+    color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.default,
     width: "100%",
   },

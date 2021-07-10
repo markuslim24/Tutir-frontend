@@ -19,7 +19,7 @@ export default function Home() {
             <h1>Hi {user.name}</h1>
           </>
         ) : (
-          <h1>User not authenticated</h1>
+          ""
         )}
         <Recommended />
       </Container>

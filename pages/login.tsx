@@ -1,8 +1,8 @@
 //imports
 import axios from "axios";
 import { useRouter } from "next/dist/client/router";
-import { useCallback, useState } from "react";
-import { useDispatch, useStore } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { login } from "../store/slice/auth";
 import { client } from "../util/util";
 import Link from "next/link";
@@ -72,7 +72,8 @@ export default function Login() {
   };
 
   //send email/password to backend for authentication
-  const attemptLogin = async () => {
+  const attemptLogin = async (e) => {
+    e.preventDefault();
     try {
       setIsLoginDisabled(true);
       let res = await client.post("/auth/login", {
@@ -107,12 +108,13 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-          <FormControl className={classes.form}>
+          <form className={classes.form} onSubmit={attemptLogin}>
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
+              type="email"
               label="Email Address"
               value={email}
               autoComplete="email"
@@ -153,7 +155,6 @@ export default function Login() {
               color="primary"
               disabled={isLoginDisabled}
               className={classes.submit}
-              onClick={attemptLogin}
             >
               Sign In
             </Button>
@@ -179,7 +180,7 @@ export default function Login() {
                 </Typography>
               </Grid>
             </Grid>
-          </FormControl>
+          </form>
         </div>
         <Box mt={8}>
           <Copyright />
