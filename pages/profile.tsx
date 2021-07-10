@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { isLoggedIn } from "../store/slice/auth";
 
 import ChangeProfilePictureDialog from "../components/ChangeProfilePictureDialog";
+import EditProfileDialog from "../components/EditProfileDialog";
 import Navbar from "../components/Navbar";
 import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
@@ -12,13 +13,14 @@ import VideoTable from "../components/VideoTable";
 import { Typography } from "@material-ui/core";
 import FlipCameraIosIcon from "@material-ui/icons/FlipCameraIos";
 import { useStyles } from "../styles/pages/profileStyle";
+import { Edit } from "@material-ui/icons";
 
 export default function Profile() {
   const classes = useStyles();
   const isAuth = useSelector(isLoggedIn);
   const user = useSelector(getUser);
   const [openProfilePicture, setOpenProfilePicture] = useState(false);
-  console.log(user);
+  const [openEditProfile, setOpenEditProfile] = useState(false);
 
   return (
     <>
@@ -61,9 +63,17 @@ export default function Profile() {
             <Typography variant="h4" className={classes.greeting}>
               {isAuth ? "Hi " + user.name : "Not Authenticated"}
             </Typography>
-            <Button variant="outlined" className={classes.editProfileButton}>
-              Edit Profile
+            <Button
+              variant="outlined"
+              className={classes.editProfileButton}
+              onClick={() => setOpenEditProfile(true)}
+            >
+              Edit Name
             </Button>
+            <EditProfileDialog
+              openEditProfile={openEditProfile}
+              setOpenEditProfile={setOpenEditProfile}
+            />
           </div>
         </div>
         <div>Statistics</div>

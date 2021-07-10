@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { store } from "../store/store";
 import { useDispatch } from "react-redux";
 import { client } from "../util/util";
 import { updateUser } from "../store/slice/auth";
