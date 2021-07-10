@@ -20,6 +20,7 @@ export default function Profile() {
   const user = useSelector(getUser);
   const [openProfilePicture, setOpenProfilePicture] = useState(false);
   const [openEditProfile, setOpenEditProfile] = useState(false);
+  const [profileImageUrl, setProfileImageUrl] = useState();
 
   return (
     <>
