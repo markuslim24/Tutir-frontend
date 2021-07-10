@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: "100%",
-      margin: "0 auto",
+      margin: "10px auto",
       backgroundColor: theme.palette.background.paper,
       paddingTop: theme.spacing(2),
       paddingBottom: theme.spacing(2),

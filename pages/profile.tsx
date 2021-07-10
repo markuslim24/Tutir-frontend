@@ -13,7 +13,6 @@ import VideoTable from "../components/VideoTable";
 import { Typography } from "@material-ui/core";
 import FlipCameraIosIcon from "@material-ui/icons/FlipCameraIos";
 import { useStyles } from "../styles/pages/profileStyle";
-import { Edit } from "@material-ui/icons";
 
 export default function Profile() {
   const classes = useStyles();
@@ -28,6 +27,7 @@ export default function Profile() {
       <Container component="main" maxWidth="md">
         <div className={classes.profileBar}>
           <ChangeProfilePictureDialog
+            user={user}
             openProfilePicture={openProfilePicture}
             setOpenProfilePicture={setOpenProfilePicture}
           />
@@ -61,7 +61,7 @@ export default function Profile() {
           </div>
           <div className={classes.profileInfo}>
             <Typography variant="h4" className={classes.greeting}>
-              {isAuth ? "Hi " + user.name : "Not Authenticated"}
+              {isAuth ? user.name + "'s Profile" : "Not Authenticated"}
             </Typography>
             <Button
               variant="outlined"
@@ -71,6 +71,7 @@ export default function Profile() {
               Edit Name
             </Button>
             <EditProfileDialog
+              user={user}
               openEditProfile={openEditProfile}
               setOpenEditProfile={setOpenEditProfile}
             />

@@ -12,11 +12,12 @@ import {
 } from "@material-ui/core";
 
 const ChangeProfilePictureDialog = ({
+  user,
   setOpenProfilePicture,
   openProfilePicture,
 }) => {
   const [imgFile, setImgFile] = useState(null);
-  const [imgPreview, setImgPreview] = useState("");
+  const [imgPreview, setImgPreview] = useState(user.profileImageUrl);
   const dispatch = useDispatch();
 
   function onFileChange(event: any, fileHandler: Function): void {

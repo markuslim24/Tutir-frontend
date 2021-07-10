@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../store/slice/auth";
@@ -12,30 +12,37 @@ import {
   TextField,
 } from "@material-ui/core";
 
-const EditProfileDialog = ({ openEditProfile, setOpenEditProfile }) => {
-  const [name, setName] = useState("");
+const EditProfileDialog = ({ openEditProfile, setOpenEditProfile, user }) => {
+  const [name, setName] = useState(user.name);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    setName(user.name);
+  }, [user.name]);
+
   function onClose(): void {
     setOpenEditProfile(false);
-    setName("");
   }
 
   async function handleSubmit() {
-    try {
-      setIsSubmitDisabled(true);
-      let res = await client.post("/user/name", { name });
-      dispatch(updateUser(res.data.payload));
-      onClose();
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        let code = err.response?.data.code;
-        console.log(code);
+    if (name) {
+      try {
+        setIsSubmitDisabled(true);
+        let res = await client.post("/user/name", { name });
+        dispatch(updateUser(res.data.payload));
+        onClose();
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          let code = err.response?.data.code;
+          console.log(code);
+        }
+        throw err;
+      } finally {
+        setIsSubmitDisabled(false);
       }
-      throw err;
-    } finally {
-      setIsSubmitDisabled(false);
+    } else {
+      onClose();
     }
   }
 
