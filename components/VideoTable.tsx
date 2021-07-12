@@ -11,10 +11,12 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Toolbar from "@material-ui/core/Toolbar";
-import Tooltip from "@material-ui/core/Tooltip";
 import Paper from "@material-ui/core/Paper";
+import { IconButton } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import { Dialog, DialogContent } from "@material-ui/core";
 import UploadVideoDialog from "./UploadVideoDialog";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
@@ -30,6 +32,7 @@ const useStyles = makeStyles({
 export default function VideoTable(props) {
   const [tableData, setTableData] = useState([]);
   const [openForm, setOpenForm] = useState(false);
+  const [isDeleteDisabled, setIsDeleteDisabled] = useState(false);
 
   useEffect(() => {
     if (props.user) {
@@ -41,7 +44,12 @@ export default function VideoTable(props) {
     try {
       let res = await client.get(`/video?owner=${props.user.id}`);
       const videos = res.data.payload;
-      setTableData([...videos]);
+      setTableData(
+        [...videos].map((video) => ({
+          ...video,
+          uploadDate: new Date(video.uploadDate),
+        }))
+      );
     } catch (err) {
       if (axios.isAxiosError(err)) {
         let code = err.response?.data.code;
@@ -61,6 +69,26 @@ export default function VideoTable(props) {
 
   const handleUploadClose = () => {
     setOpenForm(false);
+  };
+
+  function formatDate(date) {
+    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+  }
+
+  const executeDelete = async (videoId) => {
+    try {
+      setIsDeleteDisabled(true);
+      await client.post(`/video/delete`, { id: videoId });
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        let code = err.response?.data.code;
+        console.log(code);
+      }
+      throw err;
+    } finally {
+      setIsDeleteDisabled(false);
+      getTableData();
+    }
   };
 
   const classes = useStyles();
@@ -92,10 +120,10 @@ export default function VideoTable(props) {
           <TableHead>
             <TableRow>
               <TableCell>Video Title</TableCell>
-              <TableCell align="right">Date</TableCell>
+              <TableCell align="right">Upload Date & Time</TableCell>
               <TableCell align="right">Views</TableCell>
               <TableCell align="right">Comments</TableCell>
-              <TableCell align="right">Likes</TableCell>
+              <TableCell align="right">Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -104,10 +132,22 @@ export default function VideoTable(props) {
                 <TableCell component="th" scope="row">
                   {data.title}
                 </TableCell>
-                <TableCell align="right">{/*row.date*/}</TableCell>
-                <TableCell align="right">{/*row.views*/}</TableCell>
-                <TableCell align="right">{/*row.comments*/}</TableCell>
-                <TableCell align="right">{/*row.likes*/}</TableCell>
+
+                <TableCell align="right">
+                  {formatDate(data.uploadDate)}
+                </TableCell>
+                <TableCell align="right">{data.views}</TableCell>
+                <TableCell align="right">{data.comments}</TableCell>
+                <TableCell align="right">
+                  <IconButton
+                    disabled={isDeleteDisabled}
+                    onClick={() => {
+                      executeDelete(data.id);
+                    }}
+                  >
+                    <DeleteForeverIcon />
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
