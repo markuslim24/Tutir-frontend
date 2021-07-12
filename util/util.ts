@@ -22,7 +22,7 @@ const protectedRoutes = [
   /\/video\/history/,
 ];
 
-const optionalRoutes = [/\/video\?id=/];
+const optionalRoutes = [/\/video\?id=/, /^\/video$/];
 
 class LoginError extends Error {
   constructor() {
