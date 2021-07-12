@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: "100%",
       padding: "10px",
       backgroundColor: theme.palette.background.default,
+      cursor: "pointer",
     },
     img: {
       width: "100%",
