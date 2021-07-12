@@ -1,9 +1,12 @@
 import React from "react";
 import ReactPlayer from "react-player";
-import { useState } from 'react';
+import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Tag from "../components/Tag";
+import AddAComment from "../components/AddAComment";
 import { client } from "../util/util";
+import { useSelector } from "react-redux";
+import { getUser } from "../store/slice/auth";
 import axios from "axios";
 import {
   Container,
@@ -20,8 +23,8 @@ import {
 import StarIcon from "@material-ui/icons/Star";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -73,19 +76,25 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "100%",
       flexGrow: 1,
     },
+    commentsPanel: {
+      marginTop: "10px",
+      width: "100%",
+      flexGrow: 1,
+    },
   })
 );
 
 const Video = () => {
   const classes = useStyles();
-  const [video, setVideo] = useState({ 
-    id: '', 
-    title: '', 
-    description: '', 
-    url: '', 
-    thumbnailUrl: '', 
-    tags: [], 
-    notes: []
+  const user = useSelector(getUser);
+  const [video, setVideo] = useState({
+    id: "",
+    title: "",
+    description: "",
+    url: "",
+    thumbnailUrl: "",
+    tags: [],
+    notes: [],
   });
   const router = useRouter();
   const handleFavouriteButtonClick = async () => {
@@ -96,7 +105,7 @@ const Video = () => {
   useEffect(() => {
     const { id } = router.query;
     if (id) {
-      client.get(`/video?id=${id}`).then(res => {
+      client.get(`/video?id=${id}`).then((res) => {
         setVideo(res.data.payload);
       });
     }
@@ -162,6 +171,14 @@ const Video = () => {
             ))}
           </Card>
         </div>
+        <Card className={classes.commentsPanel}>
+          <CardContent>
+            <Typography variant="h5">Comments</Typography>
+          </CardContent>
+          <CardContent>
+            <AddAComment user={user} />
+          </CardContent>
+        </Card>
       </Container>
     </>
   );
