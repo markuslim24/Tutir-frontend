@@ -47,7 +47,7 @@ const AddAComment = ({ user }) => {
         className={classes.Avatar}
       />
       <div className={classes.nameAndFieldContainer}>
-        <Typography>{user.name}</Typography>
+        <Typography>{user ? user.name : ""}</Typography>
         <TextField
           type="text"
           fullWidth
