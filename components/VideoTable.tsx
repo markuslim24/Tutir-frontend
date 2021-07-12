@@ -16,6 +16,7 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import UploadVideoDialog from "./UploadVideoDialog";
 import { makeStyles } from "@material-ui/core/styles";
+import Video from "../pages/[video]";
 
 const useStyles = makeStyles({
   table: {
@@ -41,7 +42,12 @@ export default function VideoTable(props) {
     try {
       let res = await client.get(`/video?owner=${props.user.id}`);
       const videos = res.data.payload;
-      setTableData([...videos]);
+      setTableData(
+        [...videos].map((video) => ({
+          ...video,
+          uploadDate: new Date(video.uploadDate),
+        }))
+      );
     } catch (err) {
       if (axios.isAxiosError(err)) {
         let code = err.response?.data.code;
@@ -62,6 +68,10 @@ export default function VideoTable(props) {
   const handleUploadClose = () => {
     setOpenForm(false);
   };
+
+  function formatDate(date) {
+    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+  }
 
   const classes = useStyles();
 
@@ -92,10 +102,9 @@ export default function VideoTable(props) {
           <TableHead>
             <TableRow>
               <TableCell>Video Title</TableCell>
-              <TableCell align="right">Date</TableCell>
+              <TableCell align="right">Upload Date & Time</TableCell>
               <TableCell align="right">Views</TableCell>
               <TableCell align="right">Comments</TableCell>
-              <TableCell align="right">Likes</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -104,10 +113,12 @@ export default function VideoTable(props) {
                 <TableCell component="th" scope="row">
                   {data.title}
                 </TableCell>
-                <TableCell align="right">{/*row.date*/}</TableCell>
-                <TableCell align="right">{/*row.views*/}</TableCell>
-                <TableCell align="right">{/*row.comments*/}</TableCell>
-                <TableCell align="right">{/*row.likes*/}</TableCell>
+
+                <TableCell align="right">
+                  {formatDate(data.uploadDate)}
+                </TableCell>
+                <TableCell align="right">{data.views}</TableCell>
+                <TableCell align="right">{data.comments}</TableCell>
               </TableRow>
             ))}
           </TableBody>
