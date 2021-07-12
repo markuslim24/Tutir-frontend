@@ -20,6 +20,7 @@ const protectedRoutes = [
   /\/video\/upload/,
   /\/video\/favourites/,
   /\/video\/history/,
+  /\/video\/delete/,
 ];
 
 const optionalRoutes = [/\/video\?id=/];
