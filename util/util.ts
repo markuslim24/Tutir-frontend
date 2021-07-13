@@ -15,6 +15,7 @@ const client = axios.create({
   withCredentials: true,
 });
 
+//Only accessible when logged in
 const protectedRoutes = [
   /user/,
   /\/video\/upload/,

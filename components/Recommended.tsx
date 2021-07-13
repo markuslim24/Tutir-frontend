@@ -5,7 +5,7 @@ import VideoPreview from "./VideoPreview";
 import Tag from "./Tag";
 
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
-import { Typography, Paper, Chip } from "@material-ui/core";
+import { Typography, Paper } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -65,17 +65,20 @@ const Recommended = () => {
     try {
       let res = await client.get("/video");
       let res2 = await client.get("/video/tags");
+      console.log(res.data.payload);
       setVideos([...res.data.payload]);
       setTopTags([...res2.data.payload].splice(0, 12));
     } catch (err) {
       if (axios.isAxiosError(err)) {
         let code = err.response?.data.code;
+        console.log(code);
         // if (code === "invalid_params") {
         //   return handleAlerts("invalid params!");
         // } else if (code === "auth_login_failed") {
         //   return handleAlerts("Incorrect username/password!");
         // }
       }
+
       throw err;
     }
   }
