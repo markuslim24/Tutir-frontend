@@ -15,12 +15,14 @@ const client = axios.create({
   withCredentials: true,
 });
 
+//Only accessible when logged in
 const protectedRoutes = [
   /user/,
   /\/video\/upload/,
   /\/video\/favourites/,
   /\/video\/history/,
   /\/video\/delete/,
+  /\/comment\/add/,
 ];
 
 const optionalRoutes = [/\/video\?id=/, /^\/video$/];

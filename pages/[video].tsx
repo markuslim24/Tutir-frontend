@@ -1,92 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { client } from "../util/util";
+import { getUser } from "../store/slice/auth";
 import ReactPlayer from "react-player";
-import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Tag from "../components/Tag";
 import AddAComment from "../components/AddAComment";
-import { client } from "../util/util";
-import { useSelector } from "react-redux";
-import { getUser } from "../store/slice/auth";
-import axios from "axios";
+import CommentPreview from "../components/CommentPreview";
 import {
   Container,
-  Grid,
+  Divider,
   Typography,
   Toolbar,
   Tooltip,
   IconButton,
-  Chip,
   Card,
   CardHeader,
   CardContent,
 } from "@material-ui/core";
 import StarIcon from "@material-ui/icons/Star";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: "flex",
-      flexWrap: "wrap",
-      flexDirection: "row",
-      marginTop: theme.spacing(6),
-    },
-
-    flexItem: {
-      width: "56rem",
-      height: "auto",
-      flexGrow: 1,
-      padding: "10px",
-    },
-    videoToolbar: {
-      display: "flex",
-      flexWrap: "wrap",
-      padding: "0px",
-      width: "100%",
-    },
-    videoTitle: {
-      flexGrow: 1,
-    },
-    tagsContainer: { height: "75px" },
-    favouriteIcon: {},
-    videoContainer: {
-      width: "90%",
-      marginTop: theme.spacing(2),
-      backgroundColor: theme.palette.background.paper,
-    },
-    descriptionAndNotes: {
-      marginTop: "10px",
-      width: "16rem",
-      flexGrow: 1,
-      display: "flex",
-      flexDirection: "column",
-    },
-    descriptionPanel: {
-      width: "100%",
-      flexGrow: 1,
-
-      minHeight: "7rem",
-      maxHeight: "15rem",
-    },
-    notesPanel: {
-      marginTop: "10px",
-      width: "100%",
-      flexGrow: 1,
-    },
-    commentsPanel: {
-      marginTop: "10px",
-      width: "100%",
-      flexGrow: 1,
-    },
-  })
-);
+import { useStyles } from "../styles/pages/[video]Style";
 
 const Video = () => {
   const classes = useStyles();
   const user = useSelector(getUser);
+  const router = useRouter();
   const [video, setVideo] = useState({
     id: "",
     title: "",
@@ -96,20 +36,34 @@ const Video = () => {
     tags: [],
     notes: [],
   });
-  const router = useRouter();
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    const { id } = router.query;
+    if (id) {
+      getVideos(id);
+      getComments(id);
+    }
+  }, [router]);
+
+  const getVideos = async (id) => {
+    await client.get(`/video?id=${id}`).then((res) => {
+      setVideo(res.data.payload);
+    });
+  };
+
+  const getComments = async (id) => {
+    await client.get(`/comment?videoId=${id}`).then((res) => {
+      setComments(res.data.payload);
+    });
+  };
+
   const handleFavouriteButtonClick = async () => {
     try {
       let res = await client.post(`/video/favourites`, { video: video.id });
     } catch (err) {}
   };
-  useEffect(() => {
-    const { id } = router.query;
-    if (id) {
-      client.get(`/video?id=${id}`).then((res) => {
-        setVideo(res.data.payload);
-      });
-    }
-  }, [router]);
+
   return (
     <>
       <Navbar />
@@ -175,9 +129,23 @@ const Video = () => {
           <CardContent>
             <Typography variant="h5">Comments</Typography>
           </CardContent>
-          <CardContent>
-            <AddAComment user={user} />
+          <CardContent className={classes.commentsCards}>
+            {user ? (
+              <AddAComment
+                user={user}
+                videoId={video.id}
+                refreshComments={getComments}
+              />
+            ) : (
+              ""
+            )}
           </CardContent>
+          <Divider />
+          {comments.map((comment) => (
+            <CardContent key={comment.id} className={classes.commentsCards}>
+              <CommentPreview user={comment.owner} text={comment.text} />
+            </CardContent>
+          ))}
         </Card>
       </Container>
     </>
