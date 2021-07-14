@@ -107,18 +107,21 @@ const Video = () => {
   useEffect(() => {
     const { id } = router.query;
     if (id) {
-      getVideosAndComments(id);
+      getVideos(id);
+      getComments(id);
     }
   }, [router]);
 
-  const getVideosAndComments = async (id) => {
+  const getVideos = async (id) => {
     await client.get(`/video?id=${id}`).then((res) => {
       setVideo(res.data.payload);
     });
+  };
+
+  const getComments = async (id) => {
     await client.get(`/comment?videoId=${id}`).then((res) => {
       setComments(res.data.payload);
     });
-    console.log(comments);
   };
 
   const handleFavouriteButtonClick = async () => {
@@ -193,7 +196,15 @@ const Video = () => {
             <Typography variant="h5">Comments</Typography>
           </CardContent>
           <CardContent className={classes.commentsCards}>
-            {user ? <AddAComment user={user} videoId={video.id} /> : ""}
+            {user ? (
+              <AddAComment
+                user={user}
+                videoId={video.id}
+                refreshComments={getComments}
+              />
+            ) : (
+              ""
+            )}
           </CardContent>
           <Divider />
           {comments.map((comment) => (

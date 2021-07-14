@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const AddAComment = ({ user, videoId }) => {
+const AddAComment = ({ user, videoId, refreshComments }) => {
   const classes = useStyles();
   const [focus, setFocus] = useState(false);
   const [comment, setComment] = useState("");
@@ -54,12 +54,12 @@ const AddAComment = ({ user, videoId }) => {
       } catch (err) {
       } finally {
         setIsCommentDisabled(false);
-        setFocus(false);
+        refreshComments(videoId);
       }
     } else {
       console.log("no comment so no post");
-      setFocus(false);
     }
+    handleCancel();
   };
 
   return (
