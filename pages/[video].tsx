@@ -10,12 +10,11 @@ import { getUser } from "../store/slice/auth";
 import axios from "axios";
 import {
   Container,
-  Grid,
+  Divider,
   Typography,
   Toolbar,
   Tooltip,
   IconButton,
-  Chip,
   Card,
   CardHeader,
   CardContent,
@@ -25,6 +24,7 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import CommentPreview from "../components/CommentPreview";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -80,6 +80,11 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: "10px",
       width: "100%",
       flexGrow: 1,
+      height: "auto",
+    },
+    commentsCards: {
+      paddingTop: "10px",
+      paddingBottom: "8px",
     },
   })
 );
@@ -87,6 +92,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const Video = () => {
   const classes = useStyles();
   const user = useSelector(getUser);
+  const router = useRouter();
   const [video, setVideo] = useState({
     id: "",
     title: "",
@@ -96,20 +102,31 @@ const Video = () => {
     tags: [],
     notes: [],
   });
-  const router = useRouter();
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    const { id } = router.query;
+    if (id) {
+      getVideosAndComments(id);
+    }
+  }, [router]);
+
+  const getVideosAndComments = async (id) => {
+    await client.get(`/video?id=${id}`).then((res) => {
+      setVideo(res.data.payload);
+    });
+    await client.get(`/comment?videoId=${id}`).then((res) => {
+      setComments(res.data.payload);
+    });
+    console.log(comments);
+  };
+
   const handleFavouriteButtonClick = async () => {
     try {
       let res = await client.post(`/video/favourites`, { video: video.id });
     } catch (err) {}
   };
-  useEffect(() => {
-    const { id } = router.query;
-    if (id) {
-      client.get(`/video?id=${id}`).then((res) => {
-        setVideo(res.data.payload);
-      });
-    }
-  }, [router]);
+
   return (
     <>
       <Navbar />
@@ -175,9 +192,15 @@ const Video = () => {
           <CardContent>
             <Typography variant="h5">Comments</Typography>
           </CardContent>
-          <CardContent>
-            <AddAComment user={user} />
+          <CardContent className={classes.commentsCards}>
+            {user ? <AddAComment user={user} videoId={video.id} /> : ""}
           </CardContent>
+          <Divider />
+          {comments.map((comment) => (
+            <CardContent key={comment.id} className={classes.commentsCards}>
+              <CommentPreview user={comment.owner} text={comment.text} />
+            </CardContent>
+          ))}
         </Card>
       </Container>
     </>

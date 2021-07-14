@@ -26,14 +26,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const CommentPreview = () => {
+const CommentPreview = ({ user, text }) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Avatar src={""} className={classes.Avatar} />
+      <Avatar
+        src={user ? user.profileImageUrl : ""}
+        className={classes.Avatar}
+      />
       <div className={classes.nameAndCommentContainer}>
-        <Typography>{/*user ? user.name : ""*/}</Typography>
-        <Typography>{/*insert user comment here*/}</Typography>
+        <Typography style={{ fontWeight: "bold" }}>
+          {user ? user.name : ""}
+        </Typography>
+        <Typography>{text ? text : ""}</Typography>
       </div>
     </div>
   );

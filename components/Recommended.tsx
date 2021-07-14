@@ -71,7 +71,6 @@ const Recommended = () => {
     } catch (err) {
       if (axios.isAxiosError(err)) {
         let code = err.response?.data.code;
-        console.log(code);
         // if (code === "invalid_params") {
         //   return handleAlerts("invalid params!");
         // } else if (code === "auth_login_failed") {

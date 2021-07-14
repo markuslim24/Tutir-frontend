@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { client } from "../util/util";
 import { Avatar, Button, TextField, Typography } from "@material-ui/core";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 
@@ -31,13 +32,34 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const AddAComment = ({ user }) => {
+const AddAComment = ({ user, videoId }) => {
   const classes = useStyles();
   const [focus, setFocus] = useState(false);
   const [comment, setComment] = useState("");
+  const [isCommentDisabled, setIsCommentDisabled] = useState(false);
 
-  const handleComment = () => {
-    console.log("Handle comment submission here");
+  const handleCancel = () => {
+    setFocus(false);
+    setComment("");
+  };
+
+  const handleComment = async () => {
+    if (comment) {
+      setIsCommentDisabled(true);
+      try {
+        let res = await client.post(`/comment/add`, {
+          videoId: videoId,
+          text: comment,
+        });
+      } catch (err) {
+      } finally {
+        setIsCommentDisabled(false);
+        setFocus(false);
+      }
+    } else {
+      console.log("no comment so no post");
+      setFocus(false);
+    }
   };
 
   return (
@@ -47,7 +69,9 @@ const AddAComment = ({ user }) => {
         className={classes.Avatar}
       />
       <div className={classes.nameAndFieldContainer}>
-        <Typography>{user ? user.name : ""}</Typography>
+        <Typography style={{ fontWeight: "bold" }}>
+          {user ? user.name : ""}
+        </Typography>
         <TextField
           type="text"
           fullWidth
@@ -56,12 +80,13 @@ const AddAComment = ({ user }) => {
           placeholder="Add a comment..."
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          onBlur={() => setFocus(false)}
           onFocus={() => setFocus(true)}
         />
         <div className={classes.buttonContainer}>
-          <Button onClick={() => setFocus(false)}>Cancel</Button>
-          <Button onClick={handleComment}>Comment</Button>
+          <Button onClick={handleCancel}>Cancel</Button>
+          <Button disabled={isCommentDisabled} onClick={handleComment}>
+            Comment
+          </Button>
         </div>
       </div>
     </div>
