@@ -4,14 +4,14 @@ import { Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
-  root: { padding: "2rem", marginBottom: "1rem" },
+  root: { padding: "1.5rem", paddingTop: "1rem", marginBottom: "1rem" },
 });
 
 const data = {
   labels: ["May", "June", "July", "August", "September", "October"],
   datasets: [
     {
-      label: "Daily Viewership",
+      label: "Monthly Viewership",
       data: [12, 19, 3, 5, 2, 3],
       fill: false,
       backgroundColor: "rgb(255, 99, 132)",
