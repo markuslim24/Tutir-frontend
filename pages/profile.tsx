@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { getUser } from "../store/slice/auth";
 import { useSelector } from "react-redux";
 import { isLoggedIn } from "../store/slice/auth";
+import ProfileGraph from "../components/ProfileGraph";
 
 import ChangeProfilePictureDialog from "../components/ChangeProfilePictureDialog";
 import EditProfileDialog from "../components/EditProfileDialog";
@@ -20,7 +21,6 @@ export default function Profile() {
   const user = useSelector(getUser);
   const [openProfilePicture, setOpenProfilePicture] = useState(false);
   const [openEditProfile, setOpenEditProfile] = useState(false);
-  const [profileImageUrl, setProfileImageUrl] = useState();
 
   return (
     <>
@@ -78,7 +78,7 @@ export default function Profile() {
             />
           </div>
         </div>
-        <div>Statistics</div>
+        <ProfileGraph />
         <VideoTable user={user} />
       </Container>
     </>

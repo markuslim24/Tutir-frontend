@@ -14,13 +14,6 @@ export default function Home() {
     <>
       <Navbar />
       <Container maxWidth="xl">
-        {isAuthenticated ? (
-          <>
-            <h1>Hi {user.name}</h1>
-          </>
-        ) : (
-          ""
-        )}
         <Recommended />
       </Container>
     </>
