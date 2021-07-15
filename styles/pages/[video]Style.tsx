@@ -25,7 +25,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     tagsContainer: { height: "75px" },
-    favouriteIcon: {},
     videoContainer: {
       width: "90%",
       marginTop: theme.spacing(2),

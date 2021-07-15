@@ -8,7 +8,9 @@ import Navbar from "../components/Navbar";
 import Tag from "../components/Tag";
 import AddAComment from "../components/AddAComment";
 import CommentPreview from "../components/CommentPreview";
+import TipDialog from "../components/TipDialog";
 import {
+  Button,
   Container,
   Divider,
   Typography,
@@ -37,6 +39,7 @@ const Video = () => {
     notes: [],
   });
   const [comments, setComments] = useState([]);
+  const [openTipDialog, setOpenTipDialog] = useState(false);
 
   useEffect(() => {
     const { id } = router.query;
@@ -77,13 +80,23 @@ const Video = () => {
           />
 
           <Toolbar className={classes.videoToolbar}>
-            <Typography variant="h4" className={classes.videoTitle}>
+            <Typography variant="h5" className={classes.videoTitle}>
               {video.title}
             </Typography>
-            <Tooltip
-              title="Add to Favourites"
-              className={classes.favouriteIcon}
-            >
+            <Tooltip title="Tip">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setOpenTipDialog(true)}
+              >
+                $TIP
+              </Button>
+            </Tooltip>
+            <TipDialog
+              openTipDialog={openTipDialog}
+              setOpenTipDialog={setOpenTipDialog}
+            />
+            <Tooltip title="Add to Favourites">
               <IconButton onClick={handleFavouriteButtonClick}>
                 <StarIcon />
               </IconButton>
