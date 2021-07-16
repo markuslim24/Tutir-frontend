@@ -10,28 +10,27 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
 
     flexItem: {
+      display: "flex",
+      flexWrap: "wrap",
+      flexDirection: "row",
       width: "56rem",
-      height: "auto",
       flexGrow: 1,
       padding: "10px",
     },
     videoToolbar: {
-      display: "flex",
-      flexWrap: "wrap",
       padding: "0px",
       width: "100%",
     },
     videoTitle: {
-      flexGrow: 1,
+      flex: "1 auto",
     },
-    tagsContainer: { height: "75px" },
+    tagsContainer: { width: "100%", height: "75px" },
     videoContainer: {
       width: "90%",
-      marginTop: theme.spacing(2),
+
       backgroundColor: theme.palette.background.paper,
     },
     descriptionAndNotes: {
-      marginTop: "10px",
       width: "16rem",
       flexGrow: 1,
       display: "flex",
