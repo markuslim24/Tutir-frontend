@@ -76,6 +76,13 @@ export default function Profile() {
               openEditProfile={openEditProfile}
               setOpenEditProfile={setOpenEditProfile}
             />
+            <Button
+              variant="outlined"
+              className={classes.linkStripeButton}
+              onClick={() => setOpenEditProfile(true)}
+            >
+              Link Stripe Account
+            </Button>
           </div>
         </div>
         <ProfileGraph />
