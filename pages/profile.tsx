@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { getUser } from "../store/slice/auth";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import { isLoggedIn } from "../store/slice/auth";
 import ProfileGraph from "../components/ProfileGraph";
-
+import { client } from "../util/util";
 import ChangeProfilePictureDialog from "../components/ChangeProfilePictureDialog";
 import EditProfileDialog from "../components/EditProfileDialog";
 import Navbar from "../components/Navbar";
@@ -19,8 +20,16 @@ export default function Profile() {
   const classes = useStyles();
   const isAuth = useSelector(isLoggedIn);
   const user = useSelector(getUser);
+  const router = useRouter();
+
   const [openProfilePicture, setOpenProfilePicture] = useState(false);
   const [openEditProfile, setOpenEditProfile] = useState(false);
+
+  const handleLinkStripeButton = async () => {
+    await client.get(`/stripe/onboard`).then((res) => {
+      window.location.href = res.data.payload;
+    });
+  };
 
   return (
     <>
@@ -79,7 +88,7 @@ export default function Profile() {
             <Button
               variant="outlined"
               className={classes.linkStripeButton}
-              onClick={() => setOpenEditProfile(true)}
+              onClick={handleLinkStripeButton}
             >
               Link Stripe Account
             </Button>

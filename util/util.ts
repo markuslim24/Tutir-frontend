@@ -23,6 +23,7 @@ const protectedRoutes = [
   /\/video\/history/,
   /\/video\/delete/,
   /\/comment\/add/,
+  /\/stripe\/onboard/,
 ];
 
 const optionalRoutes = [/\/video\?id=/, /^\/video$/];
