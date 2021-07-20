@@ -39,11 +39,16 @@ export const useStyles = makeStyles({
     width: "100%",
     height: "100%",
   },
-  profileInfo: { marginLeft: "20px", alignSelf: "center", overflow: "auto" },
+  profileInfo: {
+    marginLeft: "20px",
+    alignSelf: "center",
+    overflow: "auto",
+    width: "100%",
+  },
   greeting: {
     position: "relative",
     padding: "4px",
   },
   editProfileButton: { float: "left" },
-  linkStripeButton: { marginLeft: "5px" },
+  linkStripeButton: { marginLeft: "10px" },
 });

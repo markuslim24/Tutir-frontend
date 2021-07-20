@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getUser } from "../store/slice/auth";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
@@ -24,11 +24,33 @@ export default function Profile() {
 
   const [openProfilePicture, setOpenProfilePicture] = useState(false);
   const [openEditProfile, setOpenEditProfile] = useState(false);
+  const [stripeButtonDisabled, setStripeButtonDisabled] = useState(false);
+  const [stripeButtonMessage, setStripeButtonMessage] = useState(
+    "Link Stripe Account"
+  );
+
+  useEffect(() => {
+    if (user) {
+      if (user.stripeConnected) {
+        setStripeButtonMessage("Stripe Account Linked");
+        setStripeButtonDisabled(true);
+      } else {
+        setStripeButtonMessage("Link Stripe Account");
+        setStripeButtonDisabled(false);
+      }
+    }
+  }, [user]);
 
   const handleLinkStripeButton = async () => {
-    await client.get(`/stripe/onboard`).then((res) => {
-      window.location.href = res.data.payload;
-    });
+    try {
+      setStripeButtonDisabled(true);
+      await client.get(`/stripe/onboard`).then((res) => {
+        window.location.href = res.data.payload;
+      });
+    } catch (err) {
+    } finally {
+      setStripeButtonDisabled(false);
+    }
   };
 
   return (
@@ -88,9 +110,10 @@ export default function Profile() {
             <Button
               variant="outlined"
               className={classes.linkStripeButton}
+              disabled={stripeButtonDisabled}
               onClick={handleLinkStripeButton}
             >
-              Link Stripe Account
+              {stripeButtonMessage}
             </Button>
           </div>
         </div>
