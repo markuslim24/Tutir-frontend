@@ -1,18 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { client } from "../util/util";
+import { useSelector } from "react-redux";
+import { getUser } from "../store/slice/auth";
 import {
   Button,
   Dialog,
   DialogActions,
-  DialogContent,
-  IconButton,
+  InputAdornment,
   Typography,
   TextField,
 } from "@material-ui/core";
+import CheckoutForm from "./CheckoutForm";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe, Stripe } from "@stripe/stripe-js";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: { padding: "2rem" },
+    root: {
+      padding: "2rem",
+      '&[data-focus="true"] ': {
+        "& $dialogActions": {
+          display: "none",
+        },
+      },
+    },
     header: { margin: "auto", textAlign: "center" },
     emoji: {
       textAlign: "center",
@@ -35,24 +47,100 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: "18px",
       marginRight: "18px",
     },
+    dialogActions: {},
   })
 );
 
-const TipDialog = ({ openTipDialog, setOpenTipDialog }) => {
+const TipDialog = ({ openTipDialog, setOpenTipDialog, videoId }) => {
   const classes = useStyles();
+  const user = useSelector(getUser);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
+  const [stripe, setStripe] = useState<Stripe>();
+  const [tipAmount, setTipAmount] = useState("");
+  const [paymentMode, setPaymentMode] = useState(false);
+  const [clientSec, setClientSec] = useState("");
+  const [tipId, setTipId] = useState("");
+  const [connectAccountId, setConnectAccountId] = useState("");
+
+  useEffect(() => {
+    loadStripe(
+      "pk_test_51JD0CSCytQ0vAtZcq99PNOtqr5X3PlriLVaqgUKbDToyTwyTckhbJzPQ7SaQ1U29LeyWtEmdEihkeW3MSipGIOSJ00xMeeT0GZ"
+    ).then((res) => {
+      setStripe(res);
+    });
+  }, []);
 
   const onClose = () => {
     setOpenTipDialog(false);
+    setPaymentMode(false);
+    setTipAmount("");
+    if (tipId) {
+      cancelTip();
+    }
   };
 
-  const handleSubmit = () => {
-    console.log("handle submit here");
+  const paymentSuccess = () => {
+    setOpenTipDialog(false);
+    setPaymentMode(false);
+    setTipAmount("");
+    setTipId("");
+    setClientSec("");
+  };
+
+  const cancelTip = async () => {
+    await client.post("/tip/cancel", { tipId: tipId });
+    setTipId("");
+    setClientSec("");
+  };
+
+  const handle2button = () => {
+    setTipAmount("2");
+  };
+  const handle5button = () => {
+    setTipAmount("5");
+  };
+  const handle10button = () => {
+    setTipAmount("10");
+  };
+
+  const handleTipChange = (e) => {
+    const onlyNums = e.target.value.replace(/[^0-9]/g, "");
+    setTipAmount(onlyNums);
+  };
+
+  const handleSubmit = async () => {
+    if (tipAmount === "0" || tipAmount === "") {
+      alert("Please enter a valid amount.");
+    } else {
+      try {
+        const amountToTip = parseInt(tipAmount) * 100;
+        let res = await client.post(`/tip/create`, {
+          videoId: videoId,
+          amount: amountToTip,
+        });
+        const { id, clientSecret, connectAccountId } = res.data.payload;
+        setTipId(id);
+        setClientSec(clientSecret);
+        setConnectAccountId(connectAccountId);
+        setStripe(
+          await loadStripe(
+            "pk_test_51JD0CSCytQ0vAtZcq99PNOtqr5X3PlriLVaqgUKbDToyTwyTckhbJzPQ7SaQ1U29LeyWtEmdEihkeW3MSipGIOSJ00xMeeT0GZ",
+            {
+              stripeAccount: connectAccountId,
+            }
+          )
+        );
+
+        setPaymentMode(true);
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   return (
     <Dialog open={openTipDialog} onClose={onClose}>
-      <div className={classes.root}>
+      <div className={classes.root} data-focus={paymentMode}>
         <div className={classes.header}>
           <Typography variant="h4" style={{ fontFamily: "HeadLandOne" }}>
             Thanks!
@@ -76,15 +164,59 @@ const TipDialog = ({ openTipDialog, setOpenTipDialog }) => {
             How much would you like to tip?
           </Typography>
           <br />
-          <Button className={classes.fixedTipAmtButton}>$2</Button>
-          <Button className={classes.fixedTipAmtButton}>$5</Button>
-          <Button className={classes.fixedTipAmtButton}>$10</Button>
+          <Button
+            className={classes.fixedTipAmtButton}
+            onClick={handle2button}
+            disabled={paymentMode}
+          >
+            $2
+          </Button>
+          <Button
+            className={classes.fixedTipAmtButton}
+            onClick={handle5button}
+            disabled={paymentMode}
+          >
+            $5
+          </Button>
+          <Button
+            className={classes.fixedTipAmtButton}
+            onClick={handle10button}
+            disabled={paymentMode}
+          >
+            $10
+          </Button>
           <br />
           <br />
-          <TextField variant="outlined" label="Custom Amount:"></TextField>
+          <TextField
+            variant="outlined"
+            label="Custom Amount:"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">$</InputAdornment>
+              ),
+            }}
+            value={tipAmount}
+            onChange={handleTipChange}
+            disabled={paymentMode}
+          ></TextField>
         </div>
         <br />
-        <DialogActions>
+        {paymentMode ? (
+          <Elements stripe={stripe}>
+            <CheckoutForm
+              setPaymentMode={setPaymentMode}
+              clientSecret={clientSec}
+              user={user}
+              cancelTip={cancelTip}
+              onClose={onClose}
+              paymentSuccess={paymentSuccess}
+            />
+          </Elements>
+        ) : (
+          ""
+        )}
+
+        <DialogActions className={classes.dialogActions}>
           <Button onClick={onClose} color="primary">
             Cancel
           </Button>

@@ -65,7 +65,6 @@ const Recommended = () => {
     try {
       let res = await client.get("/video");
       let res2 = await client.get("/video/tags");
-      console.log(res.data.payload);
       setVideos([...res.data.payload]);
       setTopTags([...res2.data.payload].splice(0, 12));
     } catch (err) {

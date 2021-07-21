@@ -35,6 +35,7 @@ const Video = () => {
     description: "",
     url: "",
     thumbnailUrl: "",
+    owner: { name: "" },
     tags: [],
     notes: [],
   });
@@ -76,25 +77,29 @@ const Video = () => {
             url={video.url}
             controls={true}
             width="100%"
-            height="80%"
+            height="70%"
           />
 
           <Toolbar className={classes.videoToolbar}>
-            <Typography variant="h5" className={classes.videoTitle}>
-              {video.title}
-            </Typography>
+            <div className={classes.videoTitle}>
+              <Typography variant="h5">{video.title}</Typography>
+              <Typography style={{ flexGrow: 1 }} variant="body2">
+                Uploaded by:{video.owner.name}
+              </Typography>
+            </div>
             <Tooltip title="Tip">
               <Button
                 variant="contained"
                 color="primary"
                 onClick={() => setOpenTipDialog(true)}
               >
-                $TIP
+                TIP
               </Button>
             </Tooltip>
             <TipDialog
               openTipDialog={openTipDialog}
               setOpenTipDialog={setOpenTipDialog}
+              videoId={video.id}
             />
             <Tooltip title="Add to Favourites">
               <IconButton onClick={handleFavouriteButtonClick}>
@@ -102,16 +107,19 @@ const Video = () => {
               </IconButton>
             </Tooltip>
           </Toolbar>
+
           <div className={classes.tagsContainer}>
             {video.tags.map((tag) => (
               <Tag key={tag} tag={tag} />
             ))}
           </div>
         </div>
+
         <div className={classes.descriptionAndNotes}>
           <Card className={classes.descriptionPanel}>
             <CardContent>
               <Typography variant="h5">Description</Typography>
+
               <Typography variant="body2">
                 <br />
                 {video.description}

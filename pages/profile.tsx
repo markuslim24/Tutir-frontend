@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getUser } from "../store/slice/auth";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import { isLoggedIn } from "../store/slice/auth";
 import ProfileGraph from "../components/ProfileGraph";
-
+import { client } from "../util/util";
 import ChangeProfilePictureDialog from "../components/ChangeProfilePictureDialog";
 import EditProfileDialog from "../components/EditProfileDialog";
 import Navbar from "../components/Navbar";
@@ -19,8 +20,38 @@ export default function Profile() {
   const classes = useStyles();
   const isAuth = useSelector(isLoggedIn);
   const user = useSelector(getUser);
+  const router = useRouter();
+
   const [openProfilePicture, setOpenProfilePicture] = useState(false);
   const [openEditProfile, setOpenEditProfile] = useState(false);
+  const [stripeButtonDisabled, setStripeButtonDisabled] = useState(false);
+  const [stripeButtonMessage, setStripeButtonMessage] = useState(
+    "Link Stripe Account"
+  );
+
+  useEffect(() => {
+    if (user) {
+      if (user.stripeConnected) {
+        setStripeButtonMessage("Stripe Account Linked");
+        setStripeButtonDisabled(true);
+      } else {
+        setStripeButtonMessage("Link Stripe Account");
+        setStripeButtonDisabled(false);
+      }
+    }
+  }, [user]);
+
+  const handleLinkStripeButton = async () => {
+    try {
+      setStripeButtonDisabled(true);
+      await client.get(`/stripe/onboard`).then((res) => {
+        window.location.href = res.data.payload;
+      });
+    } catch (err) {
+    } finally {
+      setStripeButtonDisabled(false);
+    }
+  };
 
   return (
     <>
@@ -76,6 +107,14 @@ export default function Profile() {
               openEditProfile={openEditProfile}
               setOpenEditProfile={setOpenEditProfile}
             />
+            <Button
+              variant="outlined"
+              className={classes.linkStripeButton}
+              disabled={stripeButtonDisabled}
+              onClick={handleLinkStripeButton}
+            >
+              {stripeButtonMessage}
+            </Button>
           </div>
         </div>
         <ProfileGraph />
