@@ -76,7 +76,6 @@ const AddAComment = ({ user, videoId, refreshComments }) => {
           type="text"
           fullWidth
           className={classes.textField}
-          data-focus={focus}
           placeholder="Add a comment..."
           value={comment}
           onChange={(e) => setComment(e.target.value)}

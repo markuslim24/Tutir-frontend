@@ -1,5 +1,4 @@
 //imports
-
 import CssBaseline from "@material-ui/core/CssBaseline";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
@@ -24,6 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     //initialize darkMode
     store.dispatch(initializeDarkModeState());
   }, []);
+
   return (
     <Provider store={store}>
       <CustomThemeProvider>

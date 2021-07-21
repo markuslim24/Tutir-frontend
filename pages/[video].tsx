@@ -99,6 +99,7 @@ const Video = () => {
             <TipDialog
               openTipDialog={openTipDialog}
               setOpenTipDialog={setOpenTipDialog}
+              videoId={video.id}
             />
             <Tooltip title="Add to Favourites">
               <IconButton onClick={handleFavouriteButtonClick}>
