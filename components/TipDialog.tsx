@@ -64,7 +64,7 @@ const TipDialog = ({ openTipDialog, setOpenTipDialog, videoId }) => {
 
   useEffect(() => {
     loadStripe(
-      "pk_test_51JD0CSCytQ0vAtZcq99PNOtqr5X3PlriLVaqgUKbDToyTwyTckhbJzPQ7SaQ1U29LeyWtEmdEihkeW3MSipGIOSJ00xMeeT0GZ"
+      process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY
     ).then((res) => {
       setStripe(res);
     });
@@ -124,7 +124,7 @@ const TipDialog = ({ openTipDialog, setOpenTipDialog, videoId }) => {
         setConnectAccountId(connectAccountId);
         setStripe(
           await loadStripe(
-            "pk_test_51JD0CSCytQ0vAtZcq99PNOtqr5X3PlriLVaqgUKbDToyTwyTckhbJzPQ7SaQ1U29LeyWtEmdEihkeW3MSipGIOSJ00xMeeT0GZ",
+            process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY,
             {
               stripeAccount: connectAccountId,
             }
