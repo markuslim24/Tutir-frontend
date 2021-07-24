@@ -38,6 +38,7 @@ const Video = () => {
     owner: { name: "" },
     tags: [],
     notes: [],
+    canTip: false,
   });
   const [comments, setComments] = useState([]);
   const [openTipDialog, setOpenTipDialog] = useState(false);
@@ -92,6 +93,7 @@ const Video = () => {
                 variant="contained"
                 color="primary"
                 onClick={() => setOpenTipDialog(true)}
+                disabled={!video.canTip}
               >
                 TIP
               </Button>
