@@ -117,7 +117,7 @@ export default function Profile() {
             </Button>
           </div>
         </div>
-        <ProfileGraph />
+        <ProfileGraph user={user} />
         <VideoTable user={user} />
       </Container>
     </>

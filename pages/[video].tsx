@@ -22,6 +22,7 @@ import {
   CardContent,
 } from "@material-ui/core";
 import StarIcon from "@material-ui/icons/Star";
+import StarOutlineIcon from "@material-ui/icons/StarOutline";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { useStyles } from "../styles/pages/[video]Style";
 
@@ -38,19 +39,23 @@ const Video = () => {
     owner: { name: "" },
     tags: [],
     notes: [],
+    canTip: false,
+    isFavourite: false,
   });
   const [comments, setComments] = useState([]);
   const [openTipDialog, setOpenTipDialog] = useState(false);
+  const [isFavourite, setIsFavourite] = useState(false);
 
   useEffect(() => {
     const { id } = router.query;
     if (id) {
-      getVideos(id);
+      getVideo(id);
       getComments(id);
+      setIsFavourite(video.isFavourite);
     }
-  }, [router]);
+  }, [router, video]);
 
-  const getVideos = async (id) => {
+  const getVideo = async (id) => {
     await client.get(`/video?id=${id}`).then((res) => {
       setVideo(res.data.payload);
     });
@@ -63,9 +68,21 @@ const Video = () => {
   };
 
   const handleFavouriteButtonClick = async () => {
-    try {
-      let res = await client.post(`/video/favourites`, { video: video.id });
-    } catch (err) {}
+    if (isFavourite) {
+      try {
+        let res = await client.post(`/video/favourites/remove`, {
+          video: video.id,
+        });
+        setIsFavourite(false);
+      } catch (err) {}
+    } else {
+      try {
+        let res = await client.post(`/video/favourites/add`, {
+          video: video.id,
+        });
+        setIsFavourite(true);
+      } catch (err) {}
+    }
   };
 
   return (
@@ -87,25 +104,22 @@ const Video = () => {
                 Uploaded by:{video.owner.name}
               </Typography>
             </div>
-            <Tooltip title="Tip">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => setOpenTipDialog(true)}
-              >
-                TIP
-              </Button>
-            </Tooltip>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setOpenTipDialog(true)}
+              disabled={!video.canTip}
+            >
+              TIP
+            </Button>
             <TipDialog
               openTipDialog={openTipDialog}
               setOpenTipDialog={setOpenTipDialog}
               videoId={video.id}
             />
-            <Tooltip title="Add to Favourites">
-              <IconButton onClick={handleFavouriteButtonClick}>
-                <StarIcon />
-              </IconButton>
-            </Tooltip>
+            <IconButton onClick={handleFavouriteButtonClick}>
+              {isFavourite ? <StarIcon /> : <StarOutlineIcon />}
+            </IconButton>
           </Toolbar>
 
           <div className={classes.tagsContainer}>

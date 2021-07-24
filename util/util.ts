@@ -20,15 +20,24 @@ const protectedRoutes = [
   /user/,
   /\/video\/upload/,
   /\/video\/favourites/,
+  /\/video\/favourites\/add/,
+  /\/video\/favourites\/remove/,
   /\/video\/history/,
   /\/video\/delete/,
+  /\/video\/viewership/,
+  /\/video\/search/,
   /\/comment\/add/,
   /\/stripe\/onboard/,
   /\/tip\/create/,
   /\/tip\/cancel/,
 ];
 
-const optionalRoutes = [/\/video\?id=/, /^\/video$/];
+const optionalRoutes = [
+  /\/video\?id=/,
+  /^\/video$/,
+  /\/video\/viewership\?creatorId=/,
+  /\/video\/search\?q=/,
+];
 
 class LoginError extends Error {
   constructor() {
