@@ -53,7 +53,7 @@ const Video = () => {
       getComments(id);
       setIsFavourite(video.isFavourite);
     }
-  }, [router, video]);
+  }, [router]);
 
   const getVideo = async (id) => {
     await client.get(`/video?id=${id}`).then((res) => {

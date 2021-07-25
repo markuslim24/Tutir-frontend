@@ -25,7 +25,6 @@ const protectedRoutes = [
   /\/video\/history/,
   /\/video\/delete/,
   /\/video\/viewership/,
-  /\/video\/search/,
   /\/comment\/add/,
   /\/stripe\/onboard/,
   /\/tip\/create/,
@@ -36,7 +35,6 @@ const optionalRoutes = [
   /\/video\?id=/,
   /^\/video$/,
   /\/video\/viewership\?creatorId=/,
-  /\/video\/search\?q=/,
 ];
 
 class LoginError extends Error {
