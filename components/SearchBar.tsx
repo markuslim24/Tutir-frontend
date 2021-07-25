@@ -33,11 +33,6 @@ const useStyles = makeStyles((theme) => ({
     padding: "0",
   },
 }));
-const top100Films = [
-  { title: "The Shawshank Redemption", year: 1994 },
-  { title: "The Godfather", year: 1972 },
-  { title: "The Godfather: Part II", year: 1974 },
-];
 
 export default function SearchBar() {
   const classes = useStyles();
@@ -52,13 +47,15 @@ export default function SearchBar() {
   };
 
   const handleSubmit = () => {
-    if (suggestedVids.length > 0) {
-      router.push(`/video?id=${suggestedVids[0].id}`);
-    }
+    // if (suggestedVids.length > 0) {
+    //   router.push(`/video?id=${suggestedVids[0].id}`);
+    // }
+    router.push(`/search/${text}`);
   };
 
   const getQueryVideos = async (text) => {
-    let res = await client.get(`/video/search?q=${text}`);
+    let res = await client.get(`/video/autocomplete?q=${text}`);
+    console.log(res.data.payload);
     setSuggestedVids(res.data.payload);
   };
 
@@ -69,18 +66,6 @@ export default function SearchBar() {
         freeSolo
         disableClearable
         options={suggestedVids}
-        getOptionLabel={(option) => {
-          // Value selected with enter, right from the input
-          if (typeof option === "string") {
-            return option;
-          }
-          // Add "xxx" option created dynamically
-          if (option.inputValue) {
-            return option.inputValue;
-          }
-          // Regular option
-          return option.title;
-        }}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         renderInput={(params) => (
