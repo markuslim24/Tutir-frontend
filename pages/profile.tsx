@@ -112,6 +112,7 @@ export default function Profile() {
               className={classes.linkStripeButton}
               disabled={stripeButtonDisabled}
               onClick={handleLinkStripeButton}
+              classes={{ disabled: classes.disabledStripeButton }}
             >
               {stripeButtonMessage}
             </Button>

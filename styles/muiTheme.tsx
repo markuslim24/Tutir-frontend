@@ -20,6 +20,7 @@ const theme = (prefersDarkMode: boolean) =>
             text: {
               primary: "#fff",
               secondary: "rgba(255, 255, 255, 0.7)",
+              disabled: "fff",
             },
             action: {
               active: "#fff",
