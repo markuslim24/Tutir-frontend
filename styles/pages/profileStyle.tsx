@@ -1,54 +1,64 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 
-export const useStyles = makeStyles({
-  profileBar: {
-    margin: "20px 0px",
-    display: "flex",
-    flexDirection: "row",
-    position: "relative",
-  },
-  avatarContainer: {
-    position: "relative",
-    width: "100px",
-    height: "100px",
-    borderRadius: "50%",
+export const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    profileBar: {
+      margin: "20px 0px",
+      display: "flex",
+      flexDirection: "row",
+      position: "relative",
+    },
+    avatarContainer: {
+      position: "relative",
+      width: "100px",
+      height: "100px",
+      borderRadius: "50%",
 
-    "&:hover ": {
-      backgroundColor: "grey",
-      cursor: "pointer",
+      "&:hover ": {
+        backgroundColor: "grey",
+        cursor: "pointer",
+      },
+
+      "&:hover $avatar": {
+        opacity: 0.5,
+      },
+      "&:hover $changeProfilePicture": {
+        opacity: 1,
+      },
+    },
+    changeProfilePicture: {
+      transition: ".3s ease",
+      position: "absolute",
+      width: "100%",
+      height: "100%",
+      top: 0,
+      textAlign: "center",
+      opacity: 0,
     },
 
-    "&:hover $avatar": {
-      opacity: 0.5,
+    avatar: {
+      width: "100%",
+      height: "100%",
     },
-    "&:hover $changeProfilePicture": {
-      opacity: 1,
+    profileInfo: {
+      marginLeft: "20px",
+      alignSelf: "center",
+      overflow: "auto",
+      width: "100%",
     },
-  },
-  changeProfilePicture: {
-    transition: ".3s ease",
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    top: 0,
-    textAlign: "center",
-    opacity: 0,
-  },
-
-  avatar: {
-    width: "100%",
-    height: "100%",
-  },
-  profileInfo: {
-    marginLeft: "20px",
-    alignSelf: "center",
-    overflow: "auto",
-    width: "100%",
-  },
-  greeting: {
-    position: "relative",
-    padding: "4px",
-  },
-  editProfileButton: { float: "left" },
-  linkStripeButton: { marginLeft: "10px" },
-});
+    greeting: {
+      position: "relative",
+      padding: "4px",
+    },
+    editProfileButton: {
+      float: "left",
+      backgroundColor: theme.palette.background.paper,
+    },
+    linkStripeButton: {
+      marginLeft: "10px",
+    },
+    disabledStripeButton: {
+      backgroundColor: theme.palette.background.paper,
+    },
+  })
+);
